@@ -70,9 +70,10 @@ namespace MfGames.Commands
 		/// Executes a command in the system and manages the resulting state.
 		/// </summary>
 		/// <param name="command">The command to execute.</param>
+		/// <param name="context">The context.</param>
 		public virtual void Do(
 			ICommand<TContext> command,
-			TContext state)
+			TContext context)
 		{
 			// Determine if this command is undoable or not.
 			var undoableCommand = command as IUndoableCommand<TContext>;
@@ -91,13 +92,13 @@ namespace MfGames.Commands
 			redoCommands.Clear();
 
 			// Perform the operation.
-			Do(command, state, false, false);
+			Do(command, context, false, false, true);
 		}
 
 		/// <summary>
 		/// Re-performs a command that was recently undone.
 		/// </summary>
-		public virtual ICommand<TContext> Redo(TContext state)
+		public virtual ICommand<TContext> Redo(TContext context)
 		{
 			// Make sure we're in a known and valid state.
 			Contract.Assert(CanRedo);
@@ -105,7 +106,7 @@ namespace MfGames.Commands
 			// Pull off the first command from the redo buffer and perform it.
 			ICommand<TContext> command = redoCommands[0];
 			redoCommands.RemoveAt(0);
-			Do(command, state, false, true);
+			Do(command, context, false, true, false);
 
 			// Return the command we just redone.
 			return command;
@@ -114,7 +115,7 @@ namespace MfGames.Commands
 		/// <summary>
 		/// Undoes a command that was recently done, either through the Do() or Redo().
 		/// </summary>
-		public virtual ICommand<TContext> Undo(TContext state)
+		public virtual ICommand<TContext> Undo(TContext context)
 		{
 			// Make sure we're in a known and valid state.
 			Contract.Assert(CanUndo);
@@ -123,7 +124,7 @@ namespace MfGames.Commands
 			// perform it.
 			ICommand<TContext> command = undoCommands[0];
 			undoCommands.RemoveAt(0);
-			Do(command, state, true, true);
+			Do(command, context, true, true, false);
 
 			// Return the command we just undone.
 			return command;
@@ -135,26 +136,29 @@ namespace MfGames.Commands
 		/// list.
 		/// </summary>
 		/// <param name="command">The command.</param>
-		/// <param name="state"></param>
+		/// <param name="state">The state.</param>
 		/// <param name="useUndo">if set to <c>true</c> [use inverse].</param>
 		/// <param name="ignoreDeferredCommands">if set to <c>true</c> [ignore deferred commands].</param>
+		/// <param name="processMerges">if set to <c>true</c> [process merges].</param>
 		private void Do(
 			ICommand<TContext> command,
-			TContext state,
+			TContext context,
 			bool useUndo,
-			bool ignoreDeferredCommands)
+			bool ignoreDeferredCommands,
+			bool processMerges)
 		{
-			// Perform the action based on undo or redo.
+			// Perform the action based on undo or redo. We always do this even if
+			// we're going to be merging later.
 			var undoableCommand = command as IUndoableCommand<TContext>;
 
 			if (undoableCommand == null
 				|| !useUndo)
 			{
-				command.Do(state);
+				command.Do(context);
 			}
 			else
 			{
-				undoableCommand.Undo(state);
+				undoableCommand.Undo(context);
 			}
 
 			// Add the action to the appropriate buffer. This assumes that the undo
@@ -171,14 +175,7 @@ namespace MfGames.Commands
 				}
 				else
 				{
-					// Insert the command into the undo buffer.
-					undoCommands.Insert(0, command);
-
-					// If the undo buffer is too large, remove the end.
-					while (undoCommands.Count > maximumUndoCommands)
-					{
-						undoCommands.RemoveAt(undoCommands.Count - 1);
-					}
+					PushUndoCommand(command, processMerges);
 				}
 			}
 
@@ -201,8 +198,48 @@ namespace MfGames.Commands
 				// Go through the commands and process each one.
 				foreach (ICommand<TContext> deferredCommand in commands)
 				{
-					Do(deferredCommand, state);
+					Do(deferredCommand, context);
 				}
+			}
+		}
+
+		/// <summary>
+		/// Pushes the command into the undo stack while handling the additional
+		/// processing for maximum undo stack size and merging commands.
+		/// </summary>
+		/// <param name="command">The command to add to the stack..</param>
+		/// <param name="processMerges">if set to <c>true</c> then process any possible merge operations.</param>
+		private void PushUndoCommand(
+			ICommand<TContext> command,
+			bool processMerges)
+		{
+			// If we have at least one item on the undo stack already and we're
+			// processing merges, see if we can combine them.
+			if (processMerges && undoCommands.Count > 0)
+			{
+				// Grab the first item as a mergable command.
+				var existingMerge = undoCommands[0] as IMergableCommand<TContext>;
+				var newMerge = command as IMergableCommand<TContext>;
+
+				if (existingMerge != null
+					&& newMerge != null
+					&& existingMerge.CanMergeFrom(newMerge))
+				{
+					// These two commands can be merged. We don't have do any other
+					// check at this point.
+					existingMerge.MergeFrom(newMerge);
+					return;
+				}
+			}
+
+			//  Check to see if we can merge the commands together.
+			// Insert the command into the undo buffer.
+			undoCommands.Insert(0, command);
+
+			// If the undo buffer is too large, remove the end.
+			while (undoCommands.Count > maximumUndoCommands)
+			{
+				undoCommands.RemoveAt(undoCommands.Count - 1);
 			}
 		}
 

@@ -115,6 +115,7 @@
     <Compile Include="CompositeCommand.cs" />
     <Compile Include="DoTypes.cs" />
     <Compile Include="ICommandController.cs" />
+    <Compile Include="IMergableCommand.cs" />
     <Compile Include="IUndoableCommand.cs" />
     <Compile Include="UndoRedoCommandController.cs" />
     <Compile Include="CommandFactoryReference.cs" />
