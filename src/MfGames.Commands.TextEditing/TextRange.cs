@@ -13,6 +13,16 @@ namespace MfGames.Commands.TextEditing
 	/// </summary>
 	public class TextRange
 	{
+		public override string ToString()
+		{
+			return string.Format(
+				"TextRange ({0}, {1} to {2}, {3})",
+				Begin.Line.Index,
+				Begin.Character.Index,
+				End.Line.Index,
+				End.Character.Index);
+		}
+
 		#region Properties
 
 		/// <summary>

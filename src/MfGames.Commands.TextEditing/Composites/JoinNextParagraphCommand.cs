@@ -35,18 +35,17 @@ namespace MfGames.Commands.TextEditing.Composites
 			IInsertTextCommand<TContext> whitespaceCommand =
 				controller.CreateInsertTextCommand(
 					new TextPosition(joinedLine, Position.End), " ");
-			whitespaceCommand.UpdateTextPosition = true;
+			whitespaceCommand.UpdateTextPosition = DoTypes.All;
 
 			// Insert the text from the line into the prvious line.
 			IInsertTextFromTextRangeCommand<TContext> insertCommand =
 				controller.CreateInsertTextFromTextRangeCommand(
 					new TextPosition(joinedLine, Position.End),
-					new SingleLineTextRange(
-						(Position) (line + 1), Position.Begin, Position.End));
+					new SingleLineTextRange((int) line + 1, Position.Begin, Position.End));
 
 			// Finally, delete the current line since we merged it.
 			IDeleteLineCommand<TContext> deleteCommand =
-				controller.CreateDeleteLineCommand((Position) (line + 1));
+				controller.CreateDeleteLineCommand((int) line + 1);
 
 			// Add the commands into the composite and indicate that the whitespace
 			// command controls where the text position will end up.

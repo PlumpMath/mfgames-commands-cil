@@ -22,23 +22,23 @@ namespace MfGames.Commands.TextEditing.Composites
 			// The split paragraph consists of inserting a new line, pasting the
 			// text to the right of the position into that one, and then removing
 			// the text from the current line.
-			int line = position.Line;
+			var line = (int) position.Line;
 
 			// Start by inserting the new line.
 			IInsertLineCommand<TContext> insertLineCommand =
-				controller.CreateInsertLineCommand((Position) (position.Line + 1));
-			insertLineCommand.UpdateTextPosition = true;
+				controller.CreateInsertLineCommand((int) position.Line + 1);
+			insertLineCommand.UpdateTextPosition = DoTypes.All;
 
 			// Insert the text from the line into the nmew line.
 			IInsertTextFromTextRangeCommand<TContext> insertTextCommand =
 				controller.CreateInsertTextFromTextRangeCommand(
-					new TextPosition((Position) (line + 1), Position.Begin),
+					new TextPosition((line + 1), Position.Begin),
 					new SingleLineTextRange(position.Line, position.Character, Position.End));
 
 			// Delete the text from the current line.
 			IDeleteTextCommand<TContext> deleteTextCommand =
 				controller.CreateDeleteTextCommand(
-					new SingleLineTextRange((Position) line, position.Character, Position.End));
+					new SingleLineTextRange(line, position.Character, Position.End));
 
 			// Add the commands into the composite and indicate that the whitespace
 			// command controls where the text position will end up.

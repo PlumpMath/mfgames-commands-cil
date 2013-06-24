@@ -22,32 +22,45 @@ namespace MfGames.Commands
 
 		#region Methods
 
-		public void Do(TContext state)
+		public void Do(TContext context)
 		{
+			// Allow extending class to prepare for the operation.
+			PreDo(context);
+
 			// To implement the command, simply iterate through the list
 			// of commands and execute each one. The state comes from the last
 			// command executed.
 			foreach (IUndoableCommand<TContext> command in Commands)
 			{
-				// Execut the command and get its state.
-				command.Do(state);
+				Do(command, context);
 			}
+
+			// Allow extending classes to complete the operation.
+			PostDo(context);
 		}
 
-		public void Redo(TContext state)
+		public void Redo(TContext context)
 		{
+			// Allow extending class to prepare for the operation.
+			PreRedo(context);
+
 			// To implement the command, simply iterate through the list
 			// of commands and execute each one. The state comes from the last
 			// command executed.
 			foreach (IUndoableCommand<TContext> command in Commands)
 			{
-				// Execut the command and get its state.
-				command.Redo(state);
+				Redo(command, context);
 			}
+
+			// Allow extending classes to complete the operation.
+			PostRedo(context);
 		}
 
-		public void Undo(TContext state)
+		public void Undo(TContext context)
 		{
+			// Allow extending class to prepare for the operation.
+			PreUndo(context);
+
 			// To implement the command, simply iterate through the list
 			// of commands and execute each one. The state comes from the last
 			// command executed.
@@ -58,8 +71,74 @@ namespace MfGames.Commands
 				index--)
 			{
 				IUndoableCommand<TContext> command = commands[index];
-				command.Undo(state);
+				Undo(command, context);
 			}
+
+			// Allow extending classes to complete the operation.
+			PostUndo(context);
+		}
+
+		/// <summary>
+		/// Internal method for executing a command with a specific context.
+		/// </summary>
+		/// <param name="command">The command to execute.</param>
+		/// <param name="context">The context of the execution.</param>
+		protected virtual void Do(
+			IUndoableCommand<TContext> command,
+			TContext context)
+		{
+			// Execute the command and get its state.
+			command.Do(context);
+		}
+
+		protected virtual void PostDo(TContext context)
+		{
+		}
+
+		protected virtual void PostRedo(TContext context)
+		{
+		}
+
+		protected virtual void PostUndo(TContext context)
+		{
+		}
+
+		protected virtual void PreDo(TContext context)
+		{
+		}
+
+		protected virtual void PreRedo(TContext context)
+		{
+		}
+
+		protected virtual void PreUndo(TContext context)
+		{
+		}
+
+		/// <summary>
+		/// Internal method for redoing a command with a specific context.
+		/// </summary>
+		/// <param name="command">The command to execute.</param>
+		/// <param name="context">The context of the execution.</param>
+		protected virtual void Redo(
+			IUndoableCommand<TContext> command,
+			TContext context)
+		{
+			// Execute the command and get its state.
+			command.Redo(context);
+		}
+
+		/// <summary>
+		/// Internal method for undoing a command with a specific context.
+		/// </summary>
+		/// <param name="command">The command to execute.</param>
+		/// <param name="context">The context of the execution.</param>
+		protected virtual void Undo(
+			IUndoableCommand<TContext> command,
+			TContext context)
+		{
+			// Execute the command and get its state.
+			command.Undo(context);
 		}
 
 		#endregion

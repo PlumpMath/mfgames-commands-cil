@@ -14,16 +14,16 @@ namespace MfGames.Commands.TextEditing
 		#region Properties
 
 		/// <summary>
-		/// When set to true, then the command should update the text position
-		/// (caret) of the context executing.
+		/// Indicates which operations the command should update the TextPosition
+		/// property in the OperationContext.
 		/// </summary>
-		bool UpdateTextPosition { get; set; }
+		DoTypes UpdateTextPosition { get; set; }
 
 		/// <summary>
-		/// When set to true, then the command should update the text selection
-		/// while executing.
+		/// Indicates which operations the command should update the TextSelection
+		/// property in the OperationContext.
 		/// </summary>
-		bool UpdateTextSelection { get; set; }
+		DoTypes UpdateTextSelection { get; set; }
 
 		#endregion
 	}

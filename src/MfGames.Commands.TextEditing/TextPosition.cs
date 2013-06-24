@@ -17,6 +17,11 @@ namespace MfGames.Commands.TextEditing
 	/// </summary>
 	public class TextPosition
 	{
+		public override string ToString()
+		{
+			return string.Format("Text ({0}, {1})", Line.Index, Character.Index);
+		}
+
 		#region Properties
 
 		/// <summary>

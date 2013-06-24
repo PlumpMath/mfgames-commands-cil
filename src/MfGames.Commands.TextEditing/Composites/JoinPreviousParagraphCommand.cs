@@ -30,12 +30,12 @@ namespace MfGames.Commands.TextEditing.Composites
 			// cursor to the end of the original first paragraph (and space).
 
 			// We start by appending the whitespace to the end of the first line.
-			var joinedLine = new Position(line - 1);
+			var joinedLine = new Position((int) line - 1);
 
 			IInsertTextCommand<TContext> whitespaceCommand =
 				controller.CreateInsertTextCommand(
 					new TextPosition(joinedLine, Position.End), " ");
-			whitespaceCommand.UpdateTextPosition = true;
+			whitespaceCommand.UpdateTextPosition = DoTypes.All;
 
 			// Insert the text from the line into the prvious line.
 			IInsertTextFromTextRangeCommand<TContext> insertCommand =

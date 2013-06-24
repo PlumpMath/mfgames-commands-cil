@@ -17,9 +17,9 @@ namespace MfGames.Commands
 		/// <summary>
 		/// Performs the command for the first time.
 		/// </summary>
-		/// <param name="state">The initial state of the system.</param>
+		/// <param name="context">The initial state of the system.</param>
 		/// <returns>The state of the system after executing.</returns>
-		void Do(TContext state);
+		void Do(TContext context);
 
 		#endregion
 	}

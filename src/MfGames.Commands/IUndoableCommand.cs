@@ -39,7 +39,7 @@ namespace MfGames.Commands
 		/// to the state at the point of the initial Do().
 		/// </summary>
 		/// <returns>The state of the system after executing.</returns>
-		void Redo(TContext state);
+		void Redo(TContext context);
 
 		/// <summary>
 		/// Undoes the command to return the system to the state before the command
@@ -48,7 +48,7 @@ namespace MfGames.Commands
 		/// only be called if <see cref="CanUndo"/> is true.
 		/// </summary>
 		/// <returns>The state of the system after executing.</returns>
-		void Undo(TContext state);
+		void Undo(TContext context);
 
 		#endregion
 	}

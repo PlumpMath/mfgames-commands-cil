@@ -40,7 +40,7 @@ namespace MfGames.Commands.TextEditing.Composites
 			// The first line is inserted into at the position.
 			IInsertTextCommand<TContext> firstCommand =
 				controller.CreateInsertTextCommand(position, lines[0]);
-			firstCommand.UpdateTextPosition = true;
+			firstCommand.UpdateTextPosition = DoTypes.All;
 
 			Commands.Add(firstCommand);
 
@@ -51,7 +51,7 @@ namespace MfGames.Commands.TextEditing.Composites
 				i++)
 			{
 				IInsertLineCommand<TContext> lineCommand =
-					controller.CreateInsertLineCommand((Position) (position.Line + 1));
+					controller.CreateInsertLineCommand((int) position.Line + 1);
 
 				Commands.Add(lineCommand);
 			}
@@ -63,7 +63,7 @@ namespace MfGames.Commands.TextEditing.Composites
 			{
 				IInsertTextCommand<TContext> textCommand =
 					controller.CreateInsertTextCommand(
-						new TextPosition((Position) (position.Line + i), Position.Begin), lines[i]);
+						new TextPosition((int) position.Line + i, Position.Begin), lines[i]);
 
 				Commands.Add(textCommand);
 			}

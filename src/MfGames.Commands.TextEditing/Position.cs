@@ -78,20 +78,25 @@ namespace MfGames.Commands.TextEditing
 			throw new IndexOutOfRangeException("Encountered an invalid index: " + Index);
 		}
 
+		public override string ToString()
+		{
+			return "Position(" + Index + ")";
+		}
+
 		#endregion
 
 		#region Operators
 
-		public static explicit operator Position(int index)
-		{
-			var position = new Position(index);
-			return position;
-		}
-
-		public static implicit operator int(Position position)
+		public static explicit operator int(Position position)
 		{
 			int index = position.Index;
 			return index;
+		}
+
+		public static implicit operator Position(int index)
+		{
+			var position = new Position(index);
+			return position;
 		}
 
 		#endregion
@@ -101,6 +106,11 @@ namespace MfGames.Commands.TextEditing
 		public Position(int index)
 		{
 			Index = index;
+		}
+
+		public Position(Position position)
+			: this(position.Index)
+		{
 		}
 
 		#endregion

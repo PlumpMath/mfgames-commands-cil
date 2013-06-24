@@ -2,6 +2,7 @@
 // Released under the MIT license
 // http://mfgames.com/mfgames-gtkext-cil/license
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
@@ -35,6 +36,16 @@ namespace MfGames.Commands
 			get { return undoCommands.Count > 0; }
 		}
 
+		public int MaximumUndoCommands
+		{
+			get { return maximumUndoCommands; }
+			set
+			{
+				Contract.Requires<ArgumentOutOfRangeException>(value >= 0);
+				maximumUndoCommands = value;
+			}
+		}
+
 		/// <summary>
 		/// Contains the state of the last command executed, regardless if it was a Do(),
 		/// Undo(), or Redo().
@@ -46,10 +57,20 @@ namespace MfGames.Commands
 		#region Methods
 
 		/// <summary>
+		/// Schedules or requests that a command be executed after the current
+		/// command is completed.
+		/// </summary>
+		/// <param name="command"></param>
+		public void DeferDo(ICommand<TContext> command)
+		{
+			deferredCommands.Add(command);
+		}
+
+		/// <summary>
 		/// Executes a command in the system and manages the resulting state.
 		/// </summary>
 		/// <param name="command">The command to execute.</param>
-		public void Do(
+		public virtual void Do(
 			ICommand<TContext> command,
 			TContext state)
 		{
@@ -76,7 +97,7 @@ namespace MfGames.Commands
 		/// <summary>
 		/// Re-performs a command that was recently undone.
 		/// </summary>
-		public void Redo(TContext state)
+		public virtual ICommand<TContext> Redo(TContext state)
 		{
 			// Make sure we're in a known and valid state.
 			Contract.Assert(CanRedo);
@@ -85,12 +106,15 @@ namespace MfGames.Commands
 			ICommand<TContext> command = redoCommands[0];
 			redoCommands.RemoveAt(0);
 			Do(command, state, false, true);
+
+			// Return the command we just redone.
+			return command;
 		}
 
 		/// <summary>
 		/// Undoes a command that was recently done, either through the Do() or Redo().
 		/// </summary>
-		public void Undo(TContext state)
+		public virtual ICommand<TContext> Undo(TContext state)
 		{
 			// Make sure we're in a known and valid state.
 			Contract.Assert(CanUndo);
@@ -100,6 +124,9 @@ namespace MfGames.Commands
 			ICommand<TContext> command = undoCommands[0];
 			undoCommands.RemoveAt(0);
 			Do(command, state, true, true);
+
+			// Return the command we just undone.
+			return command;
 		}
 
 		/// <summary>
@@ -144,7 +171,14 @@ namespace MfGames.Commands
 				}
 				else
 				{
+					// Insert the command into the undo buffer.
 					undoCommands.Insert(0, command);
+
+					// If the undo buffer is too large, remove the end.
+					while (undoCommands.Count > maximumUndoCommands)
+					{
+						undoCommands.RemoveAt(undoCommands.Count - 1);
+					}
 				}
 			}
 
@@ -181,6 +215,7 @@ namespace MfGames.Commands
 			undoCommands = new List<ICommand<TContext>>();
 			redoCommands = new List<ICommand<TContext>>();
 			deferredCommands = new List<ICommand<TContext>>();
+			maximumUndoCommands = Int32.MaxValue;
 		}
 
 		#endregion
@@ -188,6 +223,7 @@ namespace MfGames.Commands
 		#region Fields
 
 		private readonly List<ICommand<TContext>> deferredCommands;
+		private int maximumUndoCommands;
 		private readonly List<ICommand<TContext>> redoCommands;
 		private readonly List<ICommand<TContext>> undoCommands;
 

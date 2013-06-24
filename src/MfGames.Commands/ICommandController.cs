@@ -36,6 +36,13 @@ namespace MfGames.Commands
 		#region Methods
 
 		/// <summary>
+		/// Schedules or requests that a command be executed after the current
+		/// command is completed.
+		/// </summary>
+		/// <param name="command"></param>
+		void DeferDo(ICommand<TContext> command);
+
+		/// <summary>
 		/// Executes a command in the system and manages the resulting state.
 		/// </summary>
 		/// <param name="command">The command to execute.</param>
@@ -46,12 +53,12 @@ namespace MfGames.Commands
 		/// <summary>
 		/// Re-performs a command that was recently undone.
 		/// </summary>
-		void Redo(TContext state);
+		ICommand<TContext> Redo(TContext state);
 
 		/// <summary>
 		/// Undoes a command that was recently done, either through the Do() or Redo().
 		/// </summary>
-		void Undo(TContext state);
+		ICommand<TContext> Undo(TContext state);
 
 		#endregion
 	}

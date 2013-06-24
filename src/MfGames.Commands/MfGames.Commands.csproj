@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompositeCommand.cs" />
+    <Compile Include="DoTypes.cs" />
     <Compile Include="ICommandController.cs" />
     <Compile Include="IUndoableCommand.cs" />
     <Compile Include="UndoRedoCommandController.cs" />

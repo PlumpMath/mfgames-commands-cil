@@ -9,6 +9,15 @@ namespace MfGames.Commands.TextEditing
 	/// </summary>
 	public class SingleLineTextRange
 	{
+		public override string ToString()
+		{
+			return string.Format(
+				"SingleLineTextRange ({0}, {1} to {2})",
+				Line.Index,
+				CharacterBegin.Index,
+				CharacterEnd.Index);
+		}
+
 		#region Properties
 
 		/// <summary>
