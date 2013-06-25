@@ -19,7 +19,7 @@ namespace MfGames.Commands.TextEditing.Composites
 
 		public JoinPreviousParagraphCommand(
 			ITextEditingCommandController<TContext> controller,
-			Position line)
+			CharacterPosition line)
 			: base(true, false)
 		{
 			// Establish our code contracts.
@@ -30,18 +30,19 @@ namespace MfGames.Commands.TextEditing.Composites
 			// cursor to the end of the original first paragraph (and space).
 
 			// We start by appending the whitespace to the end of the first line.
-			var joinedLine = new Position((int) line - 1);
+			var joinedLine = new CharacterPosition((int) line - 1);
 
 			IInsertTextCommand<TContext> whitespaceCommand =
 				controller.CreateInsertTextCommand(
-					new TextPosition(joinedLine, Position.End), " ");
+					new TextPosition(joinedLine, CharacterPosition.End), " ");
 			whitespaceCommand.UpdateTextPosition = DoTypes.All;
 
 			// Insert the text from the line into the prvious line.
 			IInsertTextFromTextRangeCommand<TContext> insertCommand =
 				controller.CreateInsertTextFromTextRangeCommand(
-					new TextPosition(joinedLine, Position.End),
-					new SingleLineTextRange(line, Position.Begin, Position.End));
+					new TextPosition(joinedLine, CharacterPosition.End),
+					new SingleLineTextRange(
+						line, CharacterPosition.Begin, CharacterPosition.End));
 
 			// Finally, delete the current line since we merged it.
 			IDeleteLineCommand<TContext> deleteCommand =

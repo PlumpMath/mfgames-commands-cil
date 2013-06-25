@@ -85,7 +85,9 @@
     <Compile Include="IInsertTextFromTextRangeCommand.cs" />
     <Compile Include="ITextEditingCommand.cs" />
     <Compile Include="ITextEditingCommandController.cs" />
-    <Compile Include="Position.cs" />
+    <Compile Include="CharacterPosition.cs" />
+    <Compile Include="LinePosition.cs" />
+    <Compile Include="WordSearchDirection.cs" />
     <Compile Include="SingleLineTextRange.cs" />
     <Compile Include="TextPosition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

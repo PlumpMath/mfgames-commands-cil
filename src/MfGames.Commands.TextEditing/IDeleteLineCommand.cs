@@ -4,6 +4,12 @@
 
 namespace MfGames.Commands.TextEditing
 {
+	/// <summary>
+	/// A <see cref="ITextEditingCommandController"/>-specific command for deleting
+	/// lines. Most other text commands are a composite of this and the other
+	/// <see cref="ITextEditingCommand"/> objects.
+	/// </summary>
+	/// <typeparam name="TContext">The type of context object used for executing.</typeparam>
 	public interface IDeleteLineCommand<in TContext>: ITextEditingCommand<TContext>
 	{
 	}

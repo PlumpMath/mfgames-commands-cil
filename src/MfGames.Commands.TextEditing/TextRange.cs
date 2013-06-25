@@ -13,16 +13,6 @@ namespace MfGames.Commands.TextEditing
 	/// </summary>
 	public class TextRange
 	{
-		public override string ToString()
-		{
-			return string.Format(
-				"TextRange ({0}, {1} to {2}, {3})",
-				Begin.Line.Index,
-				Begin.Character.Index,
-				End.Line.Index,
-				End.Character.Index);
-		}
-
 		#region Properties
 
 		/// <summary>
@@ -37,14 +27,36 @@ namespace MfGames.Commands.TextEditing
 
 		#endregion
 
+		#region Methods
+
+		public override string ToString()
+		{
+			return string.Format(
+				"TextRange(({0}, {1}) to ({2}, {3}))",
+				Begin.Line.GetIndexString(),
+				Begin.Character.GetIndexString(),
+				End.Line.GetIndexString(),
+				End.Character.GetIndexString());
+		}
+
+		#endregion
+
+		#region Operators
+
+		public static implicit operator TextRange(SingleLineTextRange range)
+		{
+			var range = new TextRange(range);
+			return range;
+		}
+
+		#endregion
+
 		#region Constructors
 
-		public TextRange(SingleLineTextRange singleLineTextRange)
+		public TextRange(SingleLineTextRange range)
 			: this(
-				new TextPosition(
-					singleLineTextRange.Line, singleLineTextRange.CharacterBegin),
-				new TextPosition(singleLineTextRange.Line, singleLineTextRange.CharacterEnd)
-				)
+				new TextPosition(range.Line, range.CharacterBegin),
+				new TextPosition(range.Line, range.CharacterEnd))
 		{
 		}
 

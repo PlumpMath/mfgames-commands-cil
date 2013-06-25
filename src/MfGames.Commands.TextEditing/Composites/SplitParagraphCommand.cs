@@ -32,13 +32,14 @@ namespace MfGames.Commands.TextEditing.Composites
 			// Insert the text from the line into the nmew line.
 			IInsertTextFromTextRangeCommand<TContext> insertTextCommand =
 				controller.CreateInsertTextFromTextRangeCommand(
-					new TextPosition((line + 1), Position.Begin),
-					new SingleLineTextRange(position.Line, position.Character, Position.End));
+					new TextPosition((line + 1), CharacterPosition.Begin),
+					new SingleLineTextRange(
+						position.Line, position.Character, CharacterPosition.End));
 
 			// Delete the text from the current line.
 			IDeleteTextCommand<TContext> deleteTextCommand =
 				controller.CreateDeleteTextCommand(
-					new SingleLineTextRange(line, position.Character, Position.End));
+					new SingleLineTextRange(line, position.Character, CharacterPosition.End));
 
 			// Add the commands into the composite and indicate that the whitespace
 			// command controls where the text position will end up.

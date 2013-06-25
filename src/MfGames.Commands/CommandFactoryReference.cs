@@ -26,7 +26,8 @@ namespace MfGames.Commands
 		public object Data { get; private set; }
 
 		/// <summary>
-		/// Contains the required 
+		/// Contains the required key which is used to look up the actual command,
+		/// as managed by a <see cref="CommandFactoryManager"/>.
 		/// </summary>
 		public HierarchicalPath Key { get; private set; }
 

@@ -63,7 +63,8 @@ namespace MfGames.Commands.TextEditing.Composites
 			{
 				IInsertTextCommand<TContext> textCommand =
 					controller.CreateInsertTextCommand(
-						new TextPosition((int) position.Line + i, Position.Begin), lines[i]);
+						new TextPosition((int) position.Line + i, CharacterPosition.Begin),
+						lines[i]);
 
 				Commands.Add(textCommand);
 			}

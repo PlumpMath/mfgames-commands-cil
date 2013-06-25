@@ -15,12 +15,12 @@ namespace MfGames.Commands.TextEditing
 	{
 		#region Methods
 
-		IDeleteLineCommand<TContext> CreateDeleteLineCommand(Position line);
+		IDeleteLineCommand<TContext> CreateDeleteLineCommand(CharacterPosition line);
 
 		IDeleteTextCommand<TContext> CreateDeleteTextCommand(
 			SingleLineTextRange range);
 
-		IInsertLineCommand<TContext> CreateInsertLineCommand(Position line);
+		IInsertLineCommand<TContext> CreateInsertLineCommand(CharacterPosition line);
 
 		IInsertTextCommand<TContext> CreateInsertTextCommand(
 			TextPosition textPosition,

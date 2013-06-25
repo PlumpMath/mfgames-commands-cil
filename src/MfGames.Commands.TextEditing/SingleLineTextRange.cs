@@ -9,40 +9,44 @@ namespace MfGames.Commands.TextEditing
 	/// </summary>
 	public class SingleLineTextRange
 	{
-		public override string ToString()
-		{
-			return string.Format(
-				"SingleLineTextRange ({0}, {1} to {2})",
-				Line.Index,
-				CharacterBegin.Index,
-				CharacterEnd.Index);
-		}
-
 		#region Properties
 
 		/// <summary>
 		/// Contains the beginning character position in the line.
 		/// </summary>
-		public Position CharacterBegin { get; private set; }
+		public CharacterPosition CharacterBegin { get; private set; }
 
 		/// <summary>
 		/// Contains the ending character position in the line.
 		/// </summary>
-		public Position CharacterEnd { get; private set; }
+		public CharacterPosition CharacterEnd { get; private set; }
 
 		/// <summary>
 		/// Contains the line to modify.
 		/// </summary>
-		public Position Line { get; private set; }
+		public LinePosition Line { get; private set; }
+
+		#endregion
+
+		#region Methods
+
+		public override string ToString()
+		{
+			return string.Format(
+				"SingleLineTextRange ({0}, {1} to {2})",
+				Line.GetIndexString(),
+				CharacterBegin.GetIndexString(),
+				CharacterEnd.GetIndexString());
+		}
 
 		#endregion
 
 		#region Constructors
 
 		public SingleLineTextRange(
-			Position line,
-			Position characterBegin,
-			Position characterEnd)
+			LinePosition line,
+			CharacterPosition characterBegin,
+			CharacterPosition characterEnd)
 		{
 			Line = line;
 			CharacterBegin = characterBegin;

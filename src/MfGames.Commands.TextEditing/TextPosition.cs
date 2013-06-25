@@ -17,30 +17,35 @@ namespace MfGames.Commands.TextEditing
 	/// </summary>
 	public class TextPosition
 	{
-		public override string ToString()
-		{
-			return string.Format("Text ({0}, {1})", Line.Index, Character.Index);
-		}
-
 		#region Properties
 
 		/// <summary>
 		/// Contains the zero-based character index.
 		/// </summary>
-		public Position Character { get; private set; }
+		public CharacterPosition Character { get; private set; }
 
 		/// <summary>
 		/// Contains the zero-based line index.
 		/// </summary>
-		public Position Line { get; private set; }
+		public LinePosition Line { get; private set; }
+
+		#endregion
+
+		#region Methods
+
+		public override string ToString()
+		{
+			return string.Format(
+				"TextPosition({0}, {1})", Line.GetIndexString(), Character.GetIndexString());
+		}
 
 		#endregion
 
 		#region Constructors
 
 		public TextPosition(
-			Position line,
-			Position character)
+			LinePosition line,
+			CharacterPosition character)
 		{
 			Line = line;
 			Character = character;

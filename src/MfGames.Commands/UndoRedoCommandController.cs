@@ -36,6 +36,11 @@ namespace MfGames.Commands
 			get { return undoCommands.Count > 0; }
 		}
 
+		/// <summary>
+		/// Contains the maximum number of undo commands allowed on the stack. If
+		/// there are more, then the oldest will be removed until the stack is
+		/// within limits.
+		/// </summary>
 		public int MaximumUndoCommands
 		{
 			get { return maximumUndoCommands; }
@@ -47,10 +52,20 @@ namespace MfGames.Commands
 		}
 
 		/// <summary>
-		/// Contains the state of the last command executed, regardless if it was a Do(),
-		/// Undo(), or Redo().
+		/// Contains the current number of commands on the redo stack.
 		/// </summary>
-		public TContext State { get; private set; }
+		public int RedoCount
+		{
+			get { return redoCommands.Count; }
+		}
+
+		/// <summary>
+		/// Contains the current number of commands on the undo stack.
+		/// </summary>
+		public int UndoCount
+		{
+			get { return undoCommands.Count; }
+		}
 
 		#endregion
 
@@ -131,15 +146,55 @@ namespace MfGames.Commands
 		}
 
 		/// <summary>
+		/// Pushes the command into the undo stack while handling the additional
+		/// processing for maximum undo stack size and merging commands.
+		/// </summary>
+		/// <param name="command">The command to add to the stack..</param>
+		/// <param name="processMerges">if set to <c>true</c> then process any possible merge operations.</param>
+		protected void PushUndoCommand(
+			ICommand<TContext> command,
+			bool processMerges)
+		{
+			// If we have at least one item on the undo stack already and we're
+			// processing merges, see if we can combine them.
+			if (processMerges && undoCommands.Count > 0)
+			{
+				// Grab the first item as a mergable command.
+				var existingMerge = undoCommands[0] as IMergableCommand<TContext>;
+				var newMerge = command as IMergableCommand<TContext>;
+
+				if (existingMerge != null
+					&& newMerge != null
+					&& existingMerge.CanMergeFrom(newMerge))
+				{
+					// These two commands can be merged. We don't have do any other
+					// check at this point.
+					existingMerge.MergeFrom(newMerge);
+					return;
+				}
+			}
+
+			//  Check to see if we can merge the commands together.
+			// Insert the command into the undo buffer.
+			undoCommands.Insert(0, command);
+
+			// If the undo buffer is too large, remove the end.
+			while (undoCommands.Count > maximumUndoCommands)
+			{
+				undoCommands.RemoveAt(undoCommands.Count - 1);
+			}
+		}
+
+		/// <summary>
 		/// The internal "do" method is what performs the actual work on the project.
 		/// It also handles pushing the appropriate command on the correct undo/redo
 		/// list.
 		/// </summary>
 		/// <param name="command">The command.</param>
-		/// <param name="state">The state.</param>
+		/// <param name="context">The context for the execution.</param>
 		/// <param name="useUndo">if set to <c>true</c> [use inverse].</param>
-		/// <param name="ignoreDeferredCommands">if set to <c>true</c> [ignore deferred commands].</param>
-		/// <param name="processMerges">if set to <c>true</c> [process merges].</param>
+		/// <param name="ignoreDeferredCommands">if set to <c>true</c>, then don't process any deferred operations and clear the deferred list.</param>
+		/// <param name="processMerges">if set to <c>true</c>, then process the command for merge operations.</param>
 		private void Do(
 			ICommand<TContext> command,
 			TContext context,
@@ -203,55 +258,18 @@ namespace MfGames.Commands
 			}
 		}
 
-		/// <summary>
-		/// Pushes the command into the undo stack while handling the additional
-		/// processing for maximum undo stack size and merging commands.
-		/// </summary>
-		/// <param name="command">The command to add to the stack..</param>
-		/// <param name="processMerges">if set to <c>true</c> then process any possible merge operations.</param>
-		private void PushUndoCommand(
-			ICommand<TContext> command,
-			bool processMerges)
-		{
-			// If we have at least one item on the undo stack already and we're
-			// processing merges, see if we can combine them.
-			if (processMerges && undoCommands.Count > 0)
-			{
-				// Grab the first item as a mergable command.
-				var existingMerge = undoCommands[0] as IMergableCommand<TContext>;
-				var newMerge = command as IMergableCommand<TContext>;
-
-				if (existingMerge != null
-					&& newMerge != null
-					&& existingMerge.CanMergeFrom(newMerge))
-				{
-					// These two commands can be merged. We don't have do any other
-					// check at this point.
-					existingMerge.MergeFrom(newMerge);
-					return;
-				}
-			}
-
-			//  Check to see if we can merge the commands together.
-			// Insert the command into the undo buffer.
-			undoCommands.Insert(0, command);
-
-			// If the undo buffer is too large, remove the end.
-			while (undoCommands.Count > maximumUndoCommands)
-			{
-				undoCommands.RemoveAt(undoCommands.Count - 1);
-			}
-		}
-
 		#endregion
 
 		#region Constructors
 
 		public UndoRedoCommandController()
 		{
+			// Initialize the collections.
 			undoCommands = new List<ICommand<TContext>>();
 			redoCommands = new List<ICommand<TContext>>();
 			deferredCommands = new List<ICommand<TContext>>();
+
+			// Set the default maximum commands to (effectively) unlimited.
 			maximumUndoCommands = Int32.MaxValue;
 		}
 

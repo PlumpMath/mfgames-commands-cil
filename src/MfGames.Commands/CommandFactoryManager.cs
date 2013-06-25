@@ -18,12 +18,6 @@ namespace MfGames.Commands
 	/// </summary>
 	public class CommandFactoryManager<TContext>
 	{
-		#region Properties
-
-		public ICommandController<TContext> CommandController { get; private set; }
-
-		#endregion
-
 		#region Methods
 
 		public void Do(
@@ -114,9 +108,6 @@ namespace MfGames.Commands
 		{
 			// Establish our code contracts.
 			Contract.Requires<ArgumentNullException>(commandController != null);
-
-			// Save the member variables for later.
-			CommandController = commandController;
 
 			// Set up the internal collections.
 			factories = new Dictionary<HierarchicalPath, ICommandFactory<TContext>>();

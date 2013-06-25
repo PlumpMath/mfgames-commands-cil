@@ -25,12 +25,6 @@ namespace MfGames.Commands
 		/// </summary>
 		bool CanUndo { get; }
 
-		/// <summary>
-		/// Contains the state of the last command executed, regardless if it was a Do(),
-		/// Undo(), or Redo().
-		/// </summary>
-		TContext State { get; }
-
 		#endregion
 
 		#region Methods
@@ -39,16 +33,18 @@ namespace MfGames.Commands
 		/// Schedules or requests that a command be executed after the current
 		/// command is completed.
 		/// </summary>
-		/// <param name="command"></param>
+		/// <param name="command">The command to execute after the execution of
+		/// the current command.</param>
 		void DeferDo(ICommand<TContext> command);
 
 		/// <summary>
-		/// Executes a command in the system and manages the resulting state.
+		/// Executes a command in the system and manages the resulting context.
 		/// </summary>
 		/// <param name="command">The command to execute.</param>
+		/// <param name="context">The context for the execution.</param>
 		void Do(
 			ICommand<TContext> command,
-			TContext state);
+			TContext context);
 
 		/// <summary>
 		/// Re-performs a command that was recently undone.
