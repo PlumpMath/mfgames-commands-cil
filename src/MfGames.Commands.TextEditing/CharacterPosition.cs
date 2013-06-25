@@ -14,6 +14,25 @@ namespace MfGames.Commands.TextEditing
 	{
 		#region Methods
 
+		public bool Equals(CharacterPosition other)
+		{
+			return Index == other.Index;
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj))
+			{
+				return false;
+			}
+			return obj is CharacterPosition && Equals((CharacterPosition) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return Index;
+		}
+
 		/// <summary>
 		/// Formats the index into a symbolic string.
 		/// </summary>
@@ -132,16 +151,52 @@ namespace MfGames.Commands.TextEditing
 
 		#region Operators
 
+		public static bool operator ==(CharacterPosition left,
+			CharacterPosition right)
+		{
+			return left.Equals(right);
+		}
+
 		public static explicit operator int(CharacterPosition characterPosition)
 		{
 			int index = characterPosition.Index;
 			return index;
 		}
 
+		public static bool operator >(CharacterPosition left,
+			CharacterPosition right)
+		{
+			return left.Index > right.Index;
+		}
+
+		public static bool operator >=(CharacterPosition left,
+			CharacterPosition right)
+		{
+			return left.Index >= right.Index;
+		}
+
 		public static implicit operator CharacterPosition(int index)
 		{
 			var position = new CharacterPosition(index);
 			return position;
+		}
+
+		public static bool operator !=(CharacterPosition left,
+			CharacterPosition right)
+		{
+			return !left.Equals(right);
+		}
+
+		public static bool operator <(CharacterPosition left,
+			CharacterPosition right)
+		{
+			return left.Index < right.Index;
+		}
+
+		public static bool operator <=(CharacterPosition left,
+			CharacterPosition right)
+		{
+			return left.Index <= right.Index;
 		}
 
 		#endregion
@@ -185,7 +240,7 @@ namespace MfGames.Commands.TextEditing
 		/// <summary>
 		/// Contains the zero-based index for the position.
 		/// </summary>
-		public int Index;
+		public readonly int Index;
 
 		/// <summary>
 		/// A magic number that represents a word break for the line.

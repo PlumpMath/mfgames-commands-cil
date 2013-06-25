@@ -11,7 +11,7 @@ namespace MfGames.Commands.TextEditing
 	/// A range in a text buffer with the two anchors of the selection
 	/// being represented by <see cref="TextPosition"/>. This is an immutable class.
 	/// </summary>
-	public class TextRange
+	public class TextRange: IEquatable<TextRange>
 	{
 		#region Properties
 
@@ -29,6 +29,48 @@ namespace MfGames.Commands.TextEditing
 
 		#region Methods
 
+		public bool Equals(TextRange other)
+		{
+			if (ReferenceEquals(null, other))
+			{
+				return false;
+			}
+			if (ReferenceEquals(this, other))
+			{
+				return true;
+			}
+			return Equals(Begin, other.Begin) && Equals(End, other.End);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj))
+			{
+				return false;
+			}
+			if (ReferenceEquals(this, obj))
+			{
+				return true;
+			}
+			if (obj.GetType() != GetType())
+			{
+				return false;
+			}
+			return Equals((TextRange) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				return ((Begin != null
+					? Begin.GetHashCode()
+					: 0) * 397) ^ (End != null
+						? End.GetHashCode()
+						: 0);
+			}
+		}
+
 		public override string ToString()
 		{
 			return string.Format(
@@ -43,10 +85,22 @@ namespace MfGames.Commands.TextEditing
 
 		#region Operators
 
+		public static bool operator ==(TextRange left,
+			TextRange right)
+		{
+			return Equals(left, right);
+		}
+
 		public static implicit operator TextRange(SingleLineTextRange range)
 		{
-			var range = new TextRange(range);
-			return range;
+			var textRange = new TextRange(range);
+			return textRange;
+		}
+
+		public static bool operator !=(TextRange left,
+			TextRange right)
+		{
+			return !Equals(left, right);
 		}
 
 		#endregion

@@ -2,6 +2,8 @@
 // Released under the MIT license
 // http://mfgames.com/mfgames-gtkext-cil/license
 
+using System;
+
 namespace MfGames.Commands.TextEditing
 {
 	/// <summary>
@@ -15,7 +17,7 @@ namespace MfGames.Commands.TextEditing
 	/// would be paragraphs and headers instead of multiple lines of a very long
 	/// paragraph.
 	/// </summary>
-	public class TextPosition
+	public class TextPosition: IEquatable<TextPosition>
 	{
 		#region Properties
 
@@ -33,10 +35,108 @@ namespace MfGames.Commands.TextEditing
 
 		#region Methods
 
+		public bool Equals(TextPosition other)
+		{
+			if (ReferenceEquals(null, other))
+			{
+				return false;
+			}
+			if (ReferenceEquals(this, other))
+			{
+				return true;
+			}
+			return Character.Equals(other.Character) && Line.Equals(other.Line);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj))
+			{
+				return false;
+			}
+			if (ReferenceEquals(this, obj))
+			{
+				return true;
+			}
+			if (obj.GetType() != GetType())
+			{
+				return false;
+			}
+			return Equals((TextPosition) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				return (Character.GetHashCode() * 397) ^ Line.GetHashCode();
+			}
+		}
+
 		public override string ToString()
 		{
 			return string.Format(
 				"TextPosition({0}, {1})", Line.GetIndexString(), Character.GetIndexString());
+		}
+
+		#endregion
+
+		#region Operators
+
+		public static bool operator ==(TextPosition left,
+			TextPosition right)
+		{
+			return Equals(left, right);
+		}
+
+		public static bool operator >(TextPosition left,
+			TextPosition right)
+		{
+			if (left.Line == right.Line)
+			{
+				return left.Character > right.Character;
+			}
+
+			return left.Line > right.Line;
+		}
+
+		public static bool operator >=(TextPosition left,
+			TextPosition right)
+		{
+			if (left.Line == right.Line)
+			{
+				return left.Character >= right.Character;
+			}
+
+			return left.Line >= right.Line;
+		}
+
+		public static bool operator !=(TextPosition left,
+			TextPosition right)
+		{
+			return !Equals(left, right);
+		}
+
+		public static bool operator <(TextPosition left,
+			TextPosition right)
+		{
+			if (left.Line == right.Line)
+			{
+				return left.Character < right.Character;
+			}
+
+			return left.Line < right.Line;
+		}
+
+		public static bool operator <=(TextPosition left,
+			TextPosition right)
+		{
+			if (left.Line == right.Line)
+			{
+				return left.Character <= right.Character;
+			}
+
+			return left.Line <= right.Line;
 		}
 
 		#endregion

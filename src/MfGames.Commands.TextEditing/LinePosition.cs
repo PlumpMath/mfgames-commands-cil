@@ -10,9 +10,28 @@ namespace MfGames.Commands.TextEditing
 	/// <summary>
 	/// A structure for representing a zero-based index for lines.
 	/// </summary>
-	public struct LinePosition
+	public struct LinePosition: IEquatable<LinePosition>
 	{
 		#region Methods
+
+		public bool Equals(LinePosition other)
+		{
+			return Index == other.Index;
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj))
+			{
+				return false;
+			}
+			return obj is LinePosition && Equals((LinePosition) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return Index;
+		}
 
 		/// <summary>
 		/// Formats the index into a symbolic string.
@@ -75,16 +94,52 @@ namespace MfGames.Commands.TextEditing
 
 		#region Operators
 
+		public static bool operator ==(LinePosition left,
+			LinePosition right)
+		{
+			return left.Equals(right);
+		}
+
 		public static explicit operator int(LinePosition characterPosition)
 		{
 			int index = characterPosition.Index;
 			return index;
 		}
 
+		public static bool operator >(LinePosition left,
+			LinePosition right)
+		{
+			return left.Index > right.Index;
+		}
+
+		public static bool operator >=(LinePosition left,
+			LinePosition right)
+		{
+			return left.Index >= right.Index;
+		}
+
 		public static implicit operator LinePosition(int index)
 		{
 			var position = new LinePosition(index);
 			return position;
+		}
+
+		public static bool operator !=(LinePosition left,
+			LinePosition right)
+		{
+			return !left.Equals(right);
+		}
+
+		public static bool operator <(LinePosition left,
+			LinePosition right)
+		{
+			return left.Index < right.Index;
+		}
+
+		public static bool operator <=(LinePosition left,
+			LinePosition right)
+		{
+			return left.Index <= right.Index;
 		}
 
 		#endregion
@@ -127,7 +182,7 @@ namespace MfGames.Commands.TextEditing
 		/// <summary>
 		/// Contains the zero-based index for the position.
 		/// </summary>
-		public int Index;
+		public readonly int Index;
 
 		#endregion
 	}

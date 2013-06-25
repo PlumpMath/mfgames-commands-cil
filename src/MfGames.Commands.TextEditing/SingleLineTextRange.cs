@@ -2,12 +2,14 @@
 // Released under the MIT license
 // http://mfgames.com/mfgames-gtkext-cil/license
 
+using System;
+
 namespace MfGames.Commands.TextEditing
 {
 	/// <summary>
 	/// Represents a range of characters on a single line.
 	/// </summary>
-	public class SingleLineTextRange
+	public class SingleLineTextRange: IEquatable<SingleLineTextRange>
 	{
 		#region Properties
 
@@ -30,6 +32,48 @@ namespace MfGames.Commands.TextEditing
 
 		#region Methods
 
+		public bool Equals(SingleLineTextRange other)
+		{
+			if (ReferenceEquals(null, other))
+			{
+				return false;
+			}
+			if (ReferenceEquals(this, other))
+			{
+				return true;
+			}
+			return CharacterBegin.Equals(other.CharacterBegin)
+				&& CharacterEnd.Equals(other.CharacterEnd) && Line.Equals(other.Line);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj))
+			{
+				return false;
+			}
+			if (ReferenceEquals(this, obj))
+			{
+				return true;
+			}
+			if (obj.GetType() != GetType())
+			{
+				return false;
+			}
+			return Equals((SingleLineTextRange) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				int hashCode = CharacterBegin.GetHashCode();
+				hashCode = (hashCode * 397) ^ CharacterEnd.GetHashCode();
+				hashCode = (hashCode * 397) ^ Line.GetHashCode();
+				return hashCode;
+			}
+		}
+
 		public override string ToString()
 		{
 			return string.Format(
@@ -37,6 +81,22 @@ namespace MfGames.Commands.TextEditing
 				Line.GetIndexString(),
 				CharacterBegin.GetIndexString(),
 				CharacterEnd.GetIndexString());
+		}
+
+		#endregion
+
+		#region Operators
+
+		public static bool operator ==(SingleLineTextRange left,
+			SingleLineTextRange right)
+		{
+			return Equals(left, right);
+		}
+
+		public static bool operator !=(SingleLineTextRange left,
+			SingleLineTextRange right)
+		{
+			return !Equals(left, right);
 		}
 
 		#endregion
