@@ -70,6 +70,10 @@ namespace MfGames.Commands.TextEditing
 			// nothing to do.
 			if (Index >= 0)
 			{
+				// If we are beyond the string, throw an exception.
+				if(Index > count)
+					throw new IndexOutOfRangeException(
+						string.Format("Line position {0} is beyond line count {1}.", Index, count));
 				return Index;
 			}
 
@@ -150,7 +154,7 @@ namespace MfGames.Commands.TextEditing
 		{
 			// Establish our contracts.
 			Contract.Requires<ArgumentOutOfRangeException>(
-				index == EndIndex || index >= 0);
+				index == EndIndex || index >= 0, "index");
 
 			// Save the index for later.
 			Index = index;
@@ -171,13 +175,13 @@ namespace MfGames.Commands.TextEditing
 		/// <summary>
 		/// A position that represents the beginning of a line or range.
 		/// </summary>
-		public static CharacterPosition Begin = new CharacterPosition(BeginIndex);
+		public static LinePosition Begin = new LinePosition(BeginIndex);
 
 		/// <summary>
 		/// A magic number that represents the end of a buffer (for Line) or the end
 		/// of the line (for Character).
 		/// </summary>
-		public static readonly CharacterPosition End = new CharacterPosition(EndIndex);
+		public static readonly LinePosition End = new LinePosition(EndIndex);
 
 		/// <summary>
 		/// Contains the zero-based index for the position.

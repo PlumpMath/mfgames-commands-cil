@@ -93,7 +93,15 @@ namespace MfGames.Commands.TextEditing
 			// If we have the word, then we go either left or right.
 			if (Index == WordIndex)
 			{
-				if (direction == WordSearchDirection.Right)
+				if (searchPosition.Index == 0)
+				{
+					throw new IndexOutOfRangeException("Cannot find Word position at beginning of string.");
+				}
+				if(searchPosition.Index == text.Length)
+				{
+					throw new IndexOutOfRangeException("Cannot find Word position at end of string.");
+				}
+				if(direction == WordSearchDirection.Right)
 				{
 					int index = Math.Min(searchPosition.Index + 5, text.Length);
 					return index;
@@ -121,12 +129,17 @@ namespace MfGames.Commands.TextEditing
 		public int NormalizeIndex(string text)
 		{
 			// Establish our code contracts.
+			Contract.Requires<ArgumentNullException>(text != null);
 			Contract.Requires<InvalidOperationException>(Index != WordIndex);
 
 			// All the magic values are negative, so if we don't have one, there is
 			// nothing to do.
 			if (Index >= 0)
 			{
+				// If we are beyond the string, throw an exception.
+				if (Index > text.Length)
+					throw new IndexOutOfRangeException(
+						string.Format("Character position {0} is beyond input string length {1}.", Index, text.Length));
 				return Index;
 			}
 
