@@ -3,7 +3,6 @@
 // http://mfgames.com/mfgames-gtkext-cil/license
 
 using System;
-using System.Diagnostics.Contracts;
 
 namespace MfGames.Commands.TextEditing
 {
@@ -119,8 +118,14 @@ namespace MfGames.Commands.TextEditing
 			TextPosition end)
 		{
 			// Establish our code contracts.
-			Contract.Requires<ArgumentNullException>(begin != null);
-			Contract.Requires<ArgumentNullException>(end != null);
+			if (begin == null)
+			{
+				throw new ArgumentNullException("begin");
+			}
+			if (end == null)
+			{
+				throw new ArgumentNullException("end");
+			}
 
 			// Save the positions as member variables.
 			Begin = begin;

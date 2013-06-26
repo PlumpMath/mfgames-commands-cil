@@ -3,7 +3,6 @@
 // http://mfgames.com/mfgames-gtkext-cil/license
 
 using System;
-using System.Diagnostics.Contracts;
 
 namespace MfGames.Commands.TextEditing
 {
@@ -71,9 +70,11 @@ namespace MfGames.Commands.TextEditing
 			if (Index >= 0)
 			{
 				// If we are beyond the string, throw an exception.
-				if(Index > count)
+				if (Index > count)
+				{
 					throw new IndexOutOfRangeException(
 						string.Format("Line position {0} is beyond line count {1}.", Index, count));
+				}
 				return Index;
 			}
 
@@ -152,9 +153,13 @@ namespace MfGames.Commands.TextEditing
 
 		public LinePosition(int index)
 		{
-			// Establish our contracts.
-			Contract.Requires<ArgumentOutOfRangeException>(
-				index == EndIndex || index >= 0, "index");
+			// Establish our contract.
+			if (index != EndIndex
+				&& index < 0)
+			{
+				throw new ArgumentOutOfRangeException(
+					"index", "Cannot use a negative index that isn't End.");
+			}
 
 			// Save the index for later.
 			Index = index;

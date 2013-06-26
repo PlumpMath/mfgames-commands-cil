@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 
 namespace MfGames.Commands
 {
@@ -46,7 +45,10 @@ namespace MfGames.Commands
 			get { return maximumUndoCommands; }
 			set
 			{
-				Contract.Requires<ArgumentOutOfRangeException>(value >= 0);
+				if (value < 0)
+				{
+					throw new ArgumentOutOfRangeException("value");
+				}
 				maximumUndoCommands = value;
 			}
 		}
@@ -116,7 +118,11 @@ namespace MfGames.Commands
 		public virtual ICommand<TContext> Redo(TContext context)
 		{
 			// Make sure we're in a known and valid state.
-			Contract.Assert(CanRedo);
+			if (!CanRedo)
+			{
+				throw new InvalidOperationException(
+					"Cannot perform a Redo when CanRedo is false.");
+			}
 
 			// Pull off the first command from the redo buffer and perform it.
 			ICommand<TContext> command = redoCommands[0];
@@ -133,7 +139,11 @@ namespace MfGames.Commands
 		public virtual ICommand<TContext> Undo(TContext context)
 		{
 			// Make sure we're in a known and valid state.
-			Contract.Assert(CanUndo);
+			if (!CanUndo)
+			{
+				throw new InvalidOperationException(
+					"Cannot perform a Undo when CanUndo is false.");
+			}
 
 			// Pull off the first undo command, get its inverse operation, and
 			// perform it.

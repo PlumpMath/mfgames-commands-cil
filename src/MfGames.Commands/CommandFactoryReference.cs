@@ -3,7 +3,6 @@
 // http://mfgames.com/mfgames-gtkext-cil/license
 
 using System;
-using System.Diagnostics.Contracts;
 using MfGames.HierarchicalPaths;
 
 namespace MfGames.Commands
@@ -40,7 +39,10 @@ namespace MfGames.Commands
 			object data = null)
 		{
 			// Make sure we have a sane state.
-			Contract.Requires<ArgumentNullException>(key != null);
+			if (key == null)
+			{
+				throw new ArgumentNullException("key");
+			}
 
 			// Store the values for later.
 			Key = key;

@@ -2,9 +2,6 @@
 // Released under the MIT license
 // http://mfgames.com/mfgames-gtkext-cil/license
 
-using System;
-using System.Diagnostics.Contracts;
-
 namespace MfGames.Commands.TextEditing.Composites
 {
 	/// <summary>
@@ -22,9 +19,6 @@ namespace MfGames.Commands.TextEditing.Composites
 			LinePosition line)
 			: base(true, false)
 		{
-			// Establish our code contracts.
-			Contract.Requires<InvalidOperationException>(line.Index > 0);
-
 			// Joining a paragraph consists of inserting the text of the current
 			// paragraph into the previous one with a space and then moving the
 			// cursor to the end of the original first paragraph (and space).

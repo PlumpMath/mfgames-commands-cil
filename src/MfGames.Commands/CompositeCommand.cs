@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 
 namespace MfGames.Commands
 {
@@ -97,7 +96,10 @@ namespace MfGames.Commands
 			TContext context)
 		{
 			// Establish our contracts.
-			Contract.Requires<ArgumentNullException>(command != null);
+			if (command == null)
+			{
+				throw new ArgumentNullException("command");
+			}
 
 			// Execute the command and get its state.
 			command.Do(context);
@@ -164,7 +166,10 @@ namespace MfGames.Commands
 			TContext context)
 		{
 			// Establish our contracts.
-			Contract.Requires<ArgumentNullException>(command != null);
+			if (command == null)
+			{
+				throw new ArgumentNullException("command");
+			}
 
 			// Execute the command and get its state.
 			command.Redo(context);
@@ -180,7 +185,10 @@ namespace MfGames.Commands
 			TContext context)
 		{
 			// Establish our contracts.
-			Contract.Requires<ArgumentNullException>(command != null);
+			if (command == null)
+			{
+				throw new ArgumentNullException("command");
+			}
 
 			// Execute the command and get its state.
 			command.Undo(context);

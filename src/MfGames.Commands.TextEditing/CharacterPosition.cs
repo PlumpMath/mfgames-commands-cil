@@ -3,7 +3,6 @@
 // http://mfgames.com/mfgames-gtkext-cil/license
 
 using System;
-using System.Diagnostics.Contracts;
 
 namespace MfGames.Commands.TextEditing
 {
@@ -95,13 +94,15 @@ namespace MfGames.Commands.TextEditing
 			{
 				if (searchPosition.Index == 0)
 				{
-					throw new IndexOutOfRangeException("Cannot find Word position at beginning of string.");
+					throw new IndexOutOfRangeException(
+						"Cannot find Word position at beginning of string.");
 				}
-				if(searchPosition.Index == text.Length)
+				if (searchPosition.Index == text.Length)
 				{
-					throw new IndexOutOfRangeException("Cannot find Word position at end of string.");
+					throw new IndexOutOfRangeException(
+						"Cannot find Word position at end of string.");
 				}
-				if(direction == WordSearchDirection.Right)
+				if (direction == WordSearchDirection.Right)
 				{
 					int index = Math.Min(searchPosition.Index + 5, text.Length);
 					return index;
@@ -129,8 +130,15 @@ namespace MfGames.Commands.TextEditing
 		public int NormalizeIndex(string text)
 		{
 			// Establish our code contracts.
-			Contract.Requires<ArgumentNullException>(text != null);
-			Contract.Requires<InvalidOperationException>(Index != WordIndex);
+			if (text == null)
+			{
+				throw new ArgumentNullException("text");
+			}
+			if (Index == WordIndex)
+			{
+				throw new InvalidOperationException(
+					"Cannot normalize index with a Word position without as string.");
+			}
 
 			// All the magic values are negative, so if we don't have one, there is
 			// nothing to do.
@@ -138,8 +146,13 @@ namespace MfGames.Commands.TextEditing
 			{
 				// If we are beyond the string, throw an exception.
 				if (Index > text.Length)
+				{
 					throw new IndexOutOfRangeException(
-						string.Format("Character position {0} is beyond input string length {1}.", Index, text.Length));
+						string.Format(
+							"Character position {0} is beyond input string length {1}.",
+							Index,
+							text.Length));
+				}
 				return Index;
 			}
 
@@ -219,8 +232,13 @@ namespace MfGames.Commands.TextEditing
 		public CharacterPosition(int index)
 		{
 			// Establish our contracts.
-			Contract.Requires<ArgumentOutOfRangeException>(
-				index == WordIndex || index == EndIndex || index >= 0);
+			if (index != WordIndex
+				&& index != EndIndex
+				&& index < 0)
+			{
+				throw new ArgumentOutOfRangeException(
+					"index", "Cannot use a negative index that isn't End or Word.");
+			}
 
 			// Save the index for later.
 			Index = index;

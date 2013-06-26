@@ -3,7 +3,6 @@
 // http://mfgames.com/mfgames-gtkext-cil/license
 
 using System;
-using System.Diagnostics.Contracts;
 
 namespace MfGames.Commands.TextEditing.Composites
 {
@@ -23,7 +22,11 @@ namespace MfGames.Commands.TextEditing.Composites
 			: base(true, false)
 		{
 			// Establish our code contracts.
-			Contract.Requires<InvalidOperationException>(line.Index > 0);
+			if (line.Index <= 0)
+			{
+				throw new InvalidOperationException(
+					"Cannot join the paragraph on the first line.");
+			}
 
 			// Joining a paragraph consists of inserting the text of the current
 			// paragraph into the previous one with a space and then moving the
