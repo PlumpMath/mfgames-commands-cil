@@ -25,7 +25,8 @@ namespace MfGames.Commands
 			CommandFactoryReference commandFactoryReference)
 		{
 			// Establish our contracts.
-			Contract.Requires<ArgumentNullException>(commandFactoryReference != null);
+			if (commandFactoryReference == null)
+				throw new ArgumentNullException("commandFactoryReference");
 
 			// Grab the factory for the key pass the request to the factory.
 			ICommandFactory<TContext> factory = GetFactory(commandFactoryReference.Key);
@@ -41,7 +42,8 @@ namespace MfGames.Commands
 		public string GetTitle(CommandFactoryReference commandFactoryReference)
 		{
 			// Establish our contracts.
-			Contract.Requires<ArgumentNullException>(commandFactoryReference != null);
+			if(commandFactoryReference == null)
+				throw new ArgumentNullException("commandFactoryReference");
 
 			// Grab the factory for the key and return the title.
 			ICommandFactory<TContext> factory = GetFactory(commandFactoryReference.Key);
@@ -55,8 +57,9 @@ namespace MfGames.Commands
 		/// <param name="commandFactory"></param>
 		public void Register(ICommandFactory<TContext> commandFactory)
 		{
-			// Ensure our code contract.
-			Contract.Requires<ArgumentNullException>(commandFactory != null);
+			// Establish our code contracts.
+			if (commandFactory == null)
+				throw new ArgumentNullException("commandFactory");
 
 			// Register the command factory via the key.
 			Register(commandFactory.FactoryKey, commandFactory);
@@ -85,7 +88,8 @@ namespace MfGames.Commands
 		private ICommandFactory<TContext> GetFactory(HierarchicalPath key)
 		{
 			// Establish our contracts.
-			Contract.Requires<ArgumentNullException>(key != null);
+			if (key == null)
+				throw new ArgumentNullException("key");
 
 			// If we have the command factory registered, then grab it and return it.
 			ICommandFactory<TContext> commandFactory;
@@ -107,7 +111,8 @@ namespace MfGames.Commands
 		public CommandFactoryManager(ICommandController<TContext> commandController)
 		{
 			// Establish our code contracts.
-			Contract.Requires<ArgumentNullException>(commandController != null);
+			if (commandController == null)
+				throw new ArgumentNullException("commandController");
 
 			// Set up the internal collections.
 			factories = new Dictionary<HierarchicalPath, ICommandFactory<TContext>>();
