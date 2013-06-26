@@ -153,6 +153,7 @@ namespace MfGames.Commands.TextEditing
 							Index,
 							text.Length));
 				}
+
 				return Index;
 			}
 
