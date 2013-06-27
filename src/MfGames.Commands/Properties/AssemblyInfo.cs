@@ -9,12 +9,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("MfGames.Commands")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("MfGames Commands Pattern")]
+[assembly: AssemblyDescription("Establishes a library for a common Command Pattern implementation using generics. Also includes frequent commands for text editing.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Moonfire Games")]
-[assembly: AssemblyProduct("MfGames.Commands")]
-[assembly: AssemblyCopyright("Copyright © 2013, Moonfire Games")]
+[assembly: AssemblyProduct("Moonfire Games' Command Pattern Library")]
+[assembly: AssemblyCopyright("Copyright © Microsoft 2013, Moonfire Games")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

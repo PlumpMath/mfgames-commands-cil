@@ -3,13 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MfGames.Commands", "MfGames.Commands\MfGames.Commands.csproj", "{9E517018-C1D3-46AD-AA1D-E6FB45165A3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MfGames.Commands.TextEditing", "MfGames.Commands.TextEditing\MfGames.Commands.TextEditing.csproj", "{E3991D2E-B9D7-4C7D-9FF6-5420006C23DD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MfGames.Commands.Tests", "MfGames.Commands.Tests\MfGames.Commands.Tests.csproj", "{7519FC3F-6BF9-424D-8B7D-7139D53D0597}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2157F8DA-0839-432D-A9C6-40F8DB865FEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MfGames.Commands.TextEditings.Tests", "MfGames.Commands.TextEditings.Tests\MfGames.Commands.TextEditings.Tests.csproj", "{A906D8E9-48BD-4F27-A419-E265467EE734}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{18908B86-E2FD-4955-BF48-105ADFB069EF}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,31 +28,18 @@ Global
 		{9E517018-C1D3-46AD-AA1D-E6FB45165A3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E517018-C1D3-46AD-AA1D-E6FB45165A3F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E517018-C1D3-46AD-AA1D-E6FB45165A3F}.Release|x86.ActiveCfg = Release|Any CPU
-		{E3991D2E-B9D7-4C7D-9FF6-5420006C23DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E3991D2E-B9D7-4C7D-9FF6-5420006C23DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E3991D2E-B9D7-4C7D-9FF6-5420006C23DD}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E3991D2E-B9D7-4C7D-9FF6-5420006C23DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E3991D2E-B9D7-4C7D-9FF6-5420006C23DD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E3991D2E-B9D7-4C7D-9FF6-5420006C23DD}.Release|x86.ActiveCfg = Release|Any CPU
 		{7519FC3F-6BF9-424D-8B7D-7139D53D0597}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7519FC3F-6BF9-424D-8B7D-7139D53D0597}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7519FC3F-6BF9-424D-8B7D-7139D53D0597}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{7519FC3F-6BF9-424D-8B7D-7139D53D0597}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7519FC3F-6BF9-424D-8B7D-7139D53D0597}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7519FC3F-6BF9-424D-8B7D-7139D53D0597}.Release|x86.ActiveCfg = Release|Any CPU
-		{A906D8E9-48BD-4F27-A419-E265467EE734}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A906D8E9-48BD-4F27-A419-E265467EE734}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A906D8E9-48BD-4F27-A419-E265467EE734}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A906D8E9-48BD-4F27-A419-E265467EE734}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A906D8E9-48BD-4F27-A419-E265467EE734}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A906D8E9-48BD-4F27-A419-E265467EE734}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7519FC3F-6BF9-424D-8B7D-7139D53D0597} = {2157F8DA-0839-432D-A9C6-40F8DB865FEE}
-		{A906D8E9-48BD-4F27-A419-E265467EE734} = {2157F8DA-0839-432D-A9C6-40F8DB865FEE}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = GtkExtDemo\GtkExtDemo.csproj
