@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("MfGames Commands Pattern")]
-[assembly: AssemblyDescription("Establishes a library for a common Command Pattern implementation using generics. Also includes frequent commands for text editing.")]
+[assembly: AssemblyDescription("A library for a common Command Pattern implementation using generics. Also includes frequent commands for text editing.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Moonfire Games")]
 [assembly: AssemblyProduct("Moonfire Games' Command Pattern Library")]
@@ -39,5 +39,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("0.1.0.0")]
-[assembly: AssemblyFileVersion("0.1.0.0")]
+[assembly: AssemblyVersion("0.1.1.0")]
+[assembly: AssemblyFileVersion("0.1.1.0")]
