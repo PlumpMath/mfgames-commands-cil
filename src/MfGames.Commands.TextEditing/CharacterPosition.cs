@@ -131,13 +131,15 @@ namespace MfGames.Commands.TextEditing
 			if (Index == WordIndex)
 			{
 				// Perform some additional checks on the range and index.
-				if (searchPosition.Index == 0)
+				if (searchPosition.Index == 0
+					&& direction == WordSearchDirection.Left)
 				{
 					throw new IndexOutOfRangeException(
 						"Cannot find Word position at beginning of string.");
 				}
 
-				if (searchPosition.Index == text.Length)
+				if (searchPosition.Index == text.Length
+					&& direction == WordSearchDirection.Right)
 				{
 					throw new IndexOutOfRangeException(
 						"Cannot find Word position at end of string.");
