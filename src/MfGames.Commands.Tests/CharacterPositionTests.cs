@@ -3,6 +3,7 @@
 // http://mfgames.com/mfgames-gtkext-cil/license
 
 using System;
+using MfGames.Commands.Tests;
 using MfGames.Commands.TextEditing;
 using NUnit.Framework;
 
@@ -89,6 +90,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			// Arrange
 			const string input = "one one one one";
 			CharacterPosition position = CharacterPosition.Word;
+			CharacterPosition.DefaultWordTokenizer = new OffsetWordTokenizer();
 
 			// Act
 			Assert.Throws<IndexOutOfRangeException>(
@@ -101,6 +103,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			// Arrange
 			const string input = "one one one one";
 			CharacterPosition position = CharacterPosition.Word;
+			CharacterPosition.DefaultWordTokenizer = new OffsetWordTokenizer();
 
 			// Act
 			int results = position.NormalizeIndex(input, 10, WordSearchDirection.Left);
@@ -115,6 +118,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			// Arrange
 			const string input = "one one one one";
 			CharacterPosition position = CharacterPosition.Word;
+			CharacterPosition.DefaultWordTokenizer = new OffsetWordTokenizer();
 
 			// Act
 			int results = position.NormalizeIndex(input, 3, WordSearchDirection.Left);
@@ -168,6 +172,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			// Arrange
 			const string input = "one one one one";
 			CharacterPosition position = CharacterPosition.Word;
+			CharacterPosition.DefaultWordTokenizer = new OffsetWordTokenizer();
 
 			// Act
 			Assert.Throws<IndexOutOfRangeException>(
@@ -180,6 +185,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			// Arrange
 			const string input = "one one one one";
 			CharacterPosition position = CharacterPosition.Word;
+			CharacterPosition.DefaultWordTokenizer = new OffsetWordTokenizer();
 
 			// Act
 			int results = position.NormalizeIndex(input, 10, WordSearchDirection.Right);
@@ -194,6 +200,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			// Arrange
 			const string input = "one one one one";
 			CharacterPosition position = CharacterPosition.Word;
+			CharacterPosition.DefaultWordTokenizer = new OffsetWordTokenizer();
 
 			// Act
 			int results = position.NormalizeIndex(input, 14, WordSearchDirection.Right);

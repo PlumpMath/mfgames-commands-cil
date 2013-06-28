@@ -3,6 +3,7 @@
 // http://mfgames.com/mfgames-gtkext-cil/license
 
 using System;
+using MfGames.Languages;
 
 namespace MfGames.Commands.TextEditing
 {
@@ -11,6 +12,16 @@ namespace MfGames.Commands.TextEditing
 	/// </summary>
 	public struct CharacterPosition
 	{
+		#region Properties
+
+		/// <summary>
+		/// Contains the default word tokenizer used for identifying word boundaries
+		/// when using CharacterPosition.Word.
+		/// </summary>
+		public static IWordTokenizer DefaultWordTokenizer { get; set; }
+
+		#endregion
+
 		#region Methods
 
 		public bool Equals(CharacterPosition other)
@@ -75,6 +86,33 @@ namespace MfGames.Commands.TextEditing
 			CharacterPosition searchPosition,
 			WordSearchDirection direction)
 		{
+			return NormalizeIndex(text, searchPosition, direction, DefaultWordTokenizer);
+		}
+
+		/// <summary>
+		/// Translates the magic values (End, Beginning, Word) into actual values
+		/// based on the given count.
+		/// </summary>
+		/// <param name="text">The text used for normalizing.</param>
+		/// <param name="searchPosition">The character position to start searching for words.</param>
+		/// <param name="direction">The direction to search for Word positions.</param>
+		/// <param name="wordTokenizer">The word tokenizer to use for word positions.</param>
+		/// <returns>
+		/// The normalized index.
+		/// </returns>
+		/// <exception cref="System.IndexOutOfRangeException">Encountered an invalid index:  + Index</exception>
+		public int NormalizeIndex(
+			string text,
+			CharacterPosition searchPosition,
+			WordSearchDirection direction,
+			IWordTokenizer wordTokenizer)
+		{
+			// Make sure we have a sane state before we start.
+			if (wordTokenizer == null)
+			{
+				throw new ArgumentNullException("wordTokenizer");
+			}
+
 			// All the magic values are negative, so if we don't have one, there is
 			// nothing to do.
 			if (Index >= 0)
@@ -92,24 +130,30 @@ namespace MfGames.Commands.TextEditing
 			// If we have the word, then we go either left or right.
 			if (Index == WordIndex)
 			{
+				// Perform some additional checks on the range and index.
 				if (searchPosition.Index == 0)
 				{
 					throw new IndexOutOfRangeException(
 						"Cannot find Word position at beginning of string.");
 				}
+
 				if (searchPosition.Index == text.Length)
 				{
 					throw new IndexOutOfRangeException(
 						"Cannot find Word position at end of string.");
 				}
+
+				// Depending on the direction, we use the word tokenizer in
+				// the appropriate direction.
 				if (direction == WordSearchDirection.Right)
 				{
-					int index = Math.Min(searchPosition.Index + 5, text.Length);
+					int index = wordTokenizer.GetNextWordBoundary(text, searchPosition.Index);
 					return index;
 				}
 				else
 				{
-					int index = Math.Max(searchPosition.Index - 5, 0);
+					int index = wordTokenizer.GetPreviousWordBoundary(
+						text, searchPosition.Index);
 					return index;
 				}
 			}
@@ -229,6 +273,11 @@ namespace MfGames.Commands.TextEditing
 		#endregion
 
 		#region Constructors
+
+		static CharacterPosition()
+		{
+			DefaultWordTokenizer = new WordTokenizer();
+		}
 
 		public CharacterPosition(int index)
 		{

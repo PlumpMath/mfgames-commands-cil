@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{18908B
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MfGames.Commands.TextEditing", "MfGames.Commands.TextEditing\MfGames.Commands.TextEditing.csproj", "{86819A8B-57D0-42FC-9232-382BE6877FB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,12 @@ Global
 		{7519FC3F-6BF9-424D-8B7D-7139D53D0597}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7519FC3F-6BF9-424D-8B7D-7139D53D0597}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7519FC3F-6BF9-424D-8B7D-7139D53D0597}.Release|x86.ActiveCfg = Release|Any CPU
+		{86819A8B-57D0-42FC-9232-382BE6877FB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86819A8B-57D0-42FC-9232-382BE6877FB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86819A8B-57D0-42FC-9232-382BE6877FB5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{86819A8B-57D0-42FC-9232-382BE6877FB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86819A8B-57D0-42FC-9232-382BE6877FB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86819A8B-57D0-42FC-9232-382BE6877FB5}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
