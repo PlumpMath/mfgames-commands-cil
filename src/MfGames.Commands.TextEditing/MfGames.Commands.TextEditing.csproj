@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-	<BuildPackage>true</BuildPackage>
+    <BuildPackage>true</BuildPackage>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MfGames.Languages">
-      <HintPath>..\packages\MfGames.Languages.1.0.0.0\lib\net45\MfGames.Languages.dll</HintPath>
+      <HintPath>..\packages\MfGames.Languages.0.1.0.0\lib\net45\MfGames.Languages.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -34,8 +34,8 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MfGames.Languages, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MfGames.Languages.1.0.0.0\lib\net45\MfGames.Languages.dll</HintPath>
+    <Reference Include="MfGames.Languages, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MfGames.Languages.0.1.0.0\lib\net45\MfGames.Languages.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
