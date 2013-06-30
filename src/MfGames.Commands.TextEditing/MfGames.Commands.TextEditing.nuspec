@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>http://mfgames.com/mfgames-commands-cil/license</licenseUrl>
+    <projectUrl>http://mfgames.com/mfgames-commands-cil</projectUrl>
+    <!--<iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>-->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <copyright>Copyright 2013</copyright>
+    <tags>Commands</tags>
+	<dependencies>
+      <dependency id="MfGames.Commands" version="0.1.0.0" />
+    </dependencies>
+  </metadata>
+</package>
