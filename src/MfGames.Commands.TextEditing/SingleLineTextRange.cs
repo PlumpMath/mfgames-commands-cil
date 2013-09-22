@@ -24,9 +24,46 @@ namespace MfGames.Commands.TextEditing
 		public CharacterPosition CharacterEnd { get; private set; }
 
 		/// <summary>
+		/// Gets a value indicating whether the begin point is before the
+		/// end character.
+		/// </summary>
+		public bool IsOrdered
+		{
+			get
+			{
+				bool results = CharacterBegin < CharacterEnd;
+				return results;
+			}
+		}
+
+		/// <summary>
 		/// Contains the line to modify.
 		/// </summary>
 		public LinePosition Line { get; private set; }
+
+		/// <summary>
+		/// Gets a TextPosition representing the line and start character.
+		/// </summary>
+		public TextPosition TextPositionBegin
+		{
+			get
+			{
+				var results = new TextPosition(Line, CharacterBegin);
+				return results;
+			}
+		}
+
+		/// <summary>
+		/// Gets a TextPosition representing the line and end character.
+		/// </summary>
+		public TextPosition TextPositionEnd
+		{
+			get
+			{
+				var results = new TextPosition(Line, CharacterEnd);
+				return results;
+			}
+		}
 
 		#endregion
 
@@ -38,10 +75,12 @@ namespace MfGames.Commands.TextEditing
 			{
 				return false;
 			}
+			
 			if (ReferenceEquals(this, other))
 			{
 				return true;
 			}
+
 			return CharacterBegin.Equals(other.CharacterBegin)
 				&& CharacterEnd.Equals(other.CharacterEnd) && Line.Equals(other.Line);
 		}
@@ -52,10 +91,12 @@ namespace MfGames.Commands.TextEditing
 			{
 				return false;
 			}
+			
 			if (ReferenceEquals(this, obj))
 			{
 				return true;
 			}
+			
 			if (obj.GetType() != GetType())
 			{
 				return false;
@@ -72,6 +113,22 @@ namespace MfGames.Commands.TextEditing
 				hashCode = (hashCode * 397) ^ Line.GetHashCode();
 				return hashCode;
 			}
+		}
+
+		/// <summary>
+		/// Gets a text range that is ordered so the begin character is less
+		/// than the end range.
+		/// </summary>
+		/// <returns></returns>
+		public SingleLineTextRange GetOrderedRange()
+		{
+			if (IsOrdered)
+			{
+				return this;
+			}
+
+			var results = new SingleLineTextRange(Line, CharacterEnd, CharacterBegin);
+			return results;
 		}
 
 		public override string ToString()
