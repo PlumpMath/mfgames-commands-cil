@@ -81,12 +81,12 @@ namespace MfGames.Commands.TextEditing
 		/// The normalized index.
 		/// </returns>
 		/// <exception cref="System.IndexOutOfRangeException">Encountered an invalid index:  + Index</exception>
-		public int NormalizeIndex(
+		public int GetCharacterIndex(
 			string text,
 			CharacterPosition searchPosition,
 			WordSearchDirection direction)
 		{
-			return NormalizeIndex(text, searchPosition, direction, DefaultWordTokenizer);
+			return GetCharacterIndex(text, searchPosition, direction, DefaultWordTokenizer);
 		}
 
 		/// <summary>
@@ -101,7 +101,7 @@ namespace MfGames.Commands.TextEditing
 		/// The normalized index.
 		/// </returns>
 		/// <exception cref="System.IndexOutOfRangeException">Encountered an invalid index:  + Index</exception>
-		public int NormalizeIndex(
+		public int GetCharacterIndex(
 			string text,
 			CharacterPosition searchPosition,
 			WordSearchDirection direction,
@@ -173,7 +173,7 @@ namespace MfGames.Commands.TextEditing
 		/// The normalized index.
 		/// </returns>
 		/// <exception cref="System.IndexOutOfRangeException">Encountered an invalid index:  + Index</exception>
-		public int NormalizeIndex(string text)
+		public int GetCharacterIndex(string text)
 		{
 			// Establish our code contracts.
 			if (text == null)

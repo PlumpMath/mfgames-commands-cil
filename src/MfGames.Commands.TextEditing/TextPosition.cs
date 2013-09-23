@@ -41,10 +41,12 @@ namespace MfGames.Commands.TextEditing
 			{
 				return false;
 			}
+
 			if (ReferenceEquals(this, other))
 			{
 				return true;
 			}
+
 			return CharacterPosition.Equals(other.CharacterPosition) && LinePosition.Equals(other.LinePosition);
 		}
 

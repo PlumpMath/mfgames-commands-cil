@@ -63,7 +63,7 @@ namespace MfGames.Commands.TextEditing
 		/// <param name="count">The number of items in the current collection.</param>
 		/// <returns>The normalized index.</returns>
 		/// <exception cref="System.IndexOutOfRangeException">Encountered an invalid index:  + Index</exception>
-		public int NormalizeIndex(int count)
+		public int GetLineIndex(int count)
 		{
 			// All the magic values are negative, so if we don't have one, there is
 			// nothing to do.
