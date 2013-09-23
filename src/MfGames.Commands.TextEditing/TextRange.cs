@@ -14,15 +14,77 @@ namespace MfGames.Commands.TextEditing
 	{
 		#region Properties
 
+		public CharacterPosition BeginCharacterPosition
+		{
+			get { return BeginTextPosition.CharacterPosition; }
+		}
+
+		public LinePosition BeginLinePosition
+		{
+			get { return BeginTextPosition.LinePosition; }
+		}
+
 		/// <summary>
 		/// Contains the starting text position for the selection.
 		/// </summary>
-		public TextPosition Begin { get; private set; }
+		public TextPosition BeginTextPosition { get; private set; }
+
+		public CharacterPosition EndCharacterPosition
+		{
+			get { return EndTextPosition.CharacterPosition; }
+		}
+
+		public LinePosition EndLinePosition
+		{
+			get { return EndTextPosition.LinePosition; }
+		}
 
 		/// <summary>
 		/// Contains the ending text position for the selection.
 		/// </summary>
-		public TextPosition End { get; private set; }
+		public TextPosition EndTextPosition { get; private set; }
+
+		public TextPosition FirstTextPosition
+		{
+			get
+			{
+				return BeginTextPosition < EndTextPosition
+					? BeginTextPosition
+					: EndTextPosition;
+			}
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether this text range represents an empty
+		/// selection.
+		/// </summary>
+		public bool IsEmpty
+		{
+			get
+			{
+				bool results = BeginTextPosition == EndTextPosition;
+				return results;
+			}
+		}
+
+		public bool IsSameLine
+		{
+			get
+			{
+				bool results = BeginLinePosition == EndLinePosition;
+				return results;
+			}
+		}
+
+		public TextPosition LastTextPosition
+		{
+			get
+			{
+				return BeginTextPosition < EndTextPosition
+					? EndTextPosition
+					: BeginTextPosition;
+			}
+		}
 
 		#endregion
 
@@ -34,11 +96,14 @@ namespace MfGames.Commands.TextEditing
 			{
 				return false;
 			}
+
 			if (ReferenceEquals(this, other))
 			{
 				return true;
 			}
-			return Equals(Begin, other.Begin) && Equals(End, other.End);
+
+			return Equals(BeginTextPosition, other.BeginTextPosition)
+				&& Equals(EndTextPosition, other.EndTextPosition);
 		}
 
 		public override bool Equals(object obj)
@@ -47,14 +112,17 @@ namespace MfGames.Commands.TextEditing
 			{
 				return false;
 			}
+
 			if (ReferenceEquals(this, obj))
 			{
 				return true;
 			}
+
 			if (obj.GetType() != GetType())
 			{
 				return false;
 			}
+
 			return Equals((TextRange) obj);
 		}
 
@@ -62,10 +130,10 @@ namespace MfGames.Commands.TextEditing
 		{
 			unchecked
 			{
-				return ((Begin != null
-					? Begin.GetHashCode()
-					: 0) * 397) ^ (End != null
-						? End.GetHashCode()
+				return ((BeginTextPosition != null
+					? BeginTextPosition.GetHashCode()
+					: 0) * 397) ^ (EndTextPosition != null
+						? EndTextPosition.GetHashCode()
 						: 0);
 			}
 		}
@@ -74,10 +142,10 @@ namespace MfGames.Commands.TextEditing
 		{
 			return string.Format(
 				"TextRange(({0}, {1}) to ({2}, {3}))",
-				Begin.Line.GetIndexString(),
-				Begin.Character.GetIndexString(),
-				End.Line.GetIndexString(),
-				End.Character.GetIndexString());
+				BeginTextPosition.LinePosition.GetIndexString(),
+				BeginTextPosition.CharacterPosition.GetIndexString(),
+				EndTextPosition.LinePosition.GetIndexString(),
+				EndTextPosition.CharacterPosition.GetIndexString());
 		}
 
 		#endregion
@@ -108,8 +176,8 @@ namespace MfGames.Commands.TextEditing
 
 		public TextRange(SingleLineTextRange range)
 			: this(
-				new TextPosition(range.Line, range.CharacterBegin),
-				new TextPosition(range.Line, range.CharacterEnd))
+				new TextPosition(range.LinePosition, range.BeginCharacterPosition),
+				new TextPosition(range.LinePosition, range.EndCharacterPosition))
 		{
 		}
 
@@ -128,8 +196,8 @@ namespace MfGames.Commands.TextEditing
 			}
 
 			// Save the positions as member variables.
-			Begin = begin;
-			End = end;
+			BeginTextPosition = begin;
+			EndTextPosition = end;
 		}
 
 		#endregion

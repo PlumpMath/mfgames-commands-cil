@@ -16,12 +16,55 @@ namespace MfGames.Commands.TextEditing
 		/// <summary>
 		/// Contains the beginning character position in the line.
 		/// </summary>
-		public CharacterPosition CharacterBegin { get; private set; }
+		public CharacterPosition BeginCharacterPosition { get; private set; }
+
+		/// <summary>
+		/// Gets a TextPosition representing the line and start character.
+		/// </summary>
+		public TextPosition BeginTextPosition
+		{
+			get
+			{
+				var results = new TextPosition(LinePosition, BeginCharacterPosition);
+				return results;
+			}
+		}
 
 		/// <summary>
 		/// Contains the ending character position in the line.
 		/// </summary>
-		public CharacterPosition CharacterEnd { get; private set; }
+		public CharacterPosition EndCharacterPosition { get; private set; }
+
+		/// <summary>
+		/// Gets a TextPosition representing the line and end character.
+		/// </summary>
+		public TextPosition EndTextPosition
+		{
+			get
+			{
+				var results = new TextPosition(LinePosition, EndCharacterPosition);
+				return results;
+			}
+		}
+
+		public CharacterPosition FirstCharacterPosition
+		{
+			get
+			{
+				return BeginCharacterPosition < EndCharacterPosition
+					? BeginCharacterPosition
+					: EndCharacterPosition;
+			}
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether this text range represents an empty
+		/// selection.
+		/// </summary>
+		public bool IsEmpty
+		{
+			get { return BeginTextPosition == EndTextPosition; }
+		}
 
 		/// <summary>
 		/// Gets a value indicating whether the begin point is before the
@@ -31,39 +74,25 @@ namespace MfGames.Commands.TextEditing
 		{
 			get
 			{
-				bool results = CharacterBegin < CharacterEnd;
+				bool results = BeginCharacterPosition < EndCharacterPosition;
 				return results;
+			}
+		}
+
+		public CharacterPosition LastCharacterPosition
+		{
+			get
+			{
+				return BeginCharacterPosition < EndCharacterPosition
+					? EndCharacterPosition
+					: BeginCharacterPosition;
 			}
 		}
 
 		/// <summary>
 		/// Contains the line to modify.
 		/// </summary>
-		public LinePosition Line { get; private set; }
-
-		/// <summary>
-		/// Gets a TextPosition representing the line and start character.
-		/// </summary>
-		public TextPosition TextPositionBegin
-		{
-			get
-			{
-				var results = new TextPosition(Line, CharacterBegin);
-				return results;
-			}
-		}
-
-		/// <summary>
-		/// Gets a TextPosition representing the line and end character.
-		/// </summary>
-		public TextPosition TextPositionEnd
-		{
-			get
-			{
-				var results = new TextPosition(Line, CharacterEnd);
-				return results;
-			}
-		}
+		public LinePosition LinePosition { get; private set; }
 
 		#endregion
 
@@ -75,14 +104,15 @@ namespace MfGames.Commands.TextEditing
 			{
 				return false;
 			}
-			
+
 			if (ReferenceEquals(this, other))
 			{
 				return true;
 			}
 
-			return CharacterBegin.Equals(other.CharacterBegin)
-				&& CharacterEnd.Equals(other.CharacterEnd) && Line.Equals(other.Line);
+			return BeginCharacterPosition.Equals(other.BeginCharacterPosition)
+				&& EndCharacterPosition.Equals(other.EndCharacterPosition)
+				&& LinePosition.Equals(other.LinePosition);
 		}
 
 		public override bool Equals(object obj)
@@ -91,12 +121,12 @@ namespace MfGames.Commands.TextEditing
 			{
 				return false;
 			}
-			
+
 			if (ReferenceEquals(this, obj))
 			{
 				return true;
 			}
-			
+
 			if (obj.GetType() != GetType())
 			{
 				return false;
@@ -108,9 +138,9 @@ namespace MfGames.Commands.TextEditing
 		{
 			unchecked
 			{
-				int hashCode = CharacterBegin.GetHashCode();
-				hashCode = (hashCode * 397) ^ CharacterEnd.GetHashCode();
-				hashCode = (hashCode * 397) ^ Line.GetHashCode();
+				int hashCode = BeginCharacterPosition.GetHashCode();
+				hashCode = (hashCode * 397) ^ EndCharacterPosition.GetHashCode();
+				hashCode = (hashCode * 397) ^ LinePosition.GetHashCode();
 				return hashCode;
 			}
 		}
@@ -127,7 +157,8 @@ namespace MfGames.Commands.TextEditing
 				return this;
 			}
 
-			var results = new SingleLineTextRange(Line, CharacterEnd, CharacterBegin);
+			var results = new SingleLineTextRange(
+				LinePosition, EndCharacterPosition, BeginCharacterPosition);
 			return results;
 		}
 
@@ -135,9 +166,9 @@ namespace MfGames.Commands.TextEditing
 		{
 			return string.Format(
 				"SingleLineTextRange ({0}, {1} to {2})",
-				Line.GetIndexString(),
-				CharacterBegin.GetIndexString(),
-				CharacterEnd.GetIndexString());
+				LinePosition.GetIndexString(),
+				BeginCharacterPosition.GetIndexString(),
+				EndCharacterPosition.GetIndexString());
 		}
 
 		#endregion
@@ -165,9 +196,9 @@ namespace MfGames.Commands.TextEditing
 			CharacterPosition characterBegin,
 			CharacterPosition characterEnd)
 		{
-			Line = line;
-			CharacterBegin = characterBegin;
-			CharacterEnd = characterEnd;
+			LinePosition = line;
+			BeginCharacterPosition = characterBegin;
+			EndCharacterPosition = characterEnd;
 		}
 
 		#endregion

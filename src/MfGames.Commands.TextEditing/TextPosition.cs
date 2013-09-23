@@ -24,12 +24,12 @@ namespace MfGames.Commands.TextEditing
 		/// <summary>
 		/// Contains the zero-based character index.
 		/// </summary>
-		public CharacterPosition Character { get; private set; }
+		public CharacterPosition CharacterPosition { get; private set; }
 
 		/// <summary>
 		/// Contains the zero-based line index.
 		/// </summary>
-		public LinePosition Line { get; private set; }
+		public LinePosition LinePosition { get; private set; }
 
 		#endregion
 
@@ -45,7 +45,7 @@ namespace MfGames.Commands.TextEditing
 			{
 				return true;
 			}
-			return Character.Equals(other.Character) && Line.Equals(other.Line);
+			return CharacterPosition.Equals(other.CharacterPosition) && LinePosition.Equals(other.LinePosition);
 		}
 
 		public override bool Equals(object obj)
@@ -54,14 +54,17 @@ namespace MfGames.Commands.TextEditing
 			{
 				return false;
 			}
+			
 			if (ReferenceEquals(this, obj))
 			{
 				return true;
 			}
+
 			if (obj.GetType() != GetType())
 			{
 				return false;
 			}
+
 			return Equals((TextPosition) obj);
 		}
 
@@ -69,14 +72,14 @@ namespace MfGames.Commands.TextEditing
 		{
 			unchecked
 			{
-				return (Character.GetHashCode() * 397) ^ Line.GetHashCode();
+				return (CharacterPosition.GetHashCode() * 397) ^ LinePosition.GetHashCode();
 			}
 		}
 
 		public override string ToString()
 		{
 			return string.Format(
-				"TextPosition({0}, {1})", Line.GetIndexString(), Character.GetIndexString());
+				"TextPosition({0}, {1})", LinePosition.GetIndexString(), CharacterPosition.GetIndexString());
 		}
 
 		#endregion
@@ -92,23 +95,23 @@ namespace MfGames.Commands.TextEditing
 		public static bool operator >(TextPosition left,
 			TextPosition right)
 		{
-			if (left.Line == right.Line)
+			if (left.LinePosition == right.LinePosition)
 			{
-				return left.Character > right.Character;
+				return left.CharacterPosition > right.CharacterPosition;
 			}
 
-			return left.Line > right.Line;
+			return left.LinePosition > right.LinePosition;
 		}
 
 		public static bool operator >=(TextPosition left,
 			TextPosition right)
 		{
-			if (left.Line == right.Line)
+			if (left.LinePosition == right.LinePosition)
 			{
-				return left.Character >= right.Character;
+				return left.CharacterPosition >= right.CharacterPosition;
 			}
 
-			return left.Line >= right.Line;
+			return left.LinePosition >= right.LinePosition;
 		}
 
 		public static bool operator !=(TextPosition left,
@@ -120,23 +123,23 @@ namespace MfGames.Commands.TextEditing
 		public static bool operator <(TextPosition left,
 			TextPosition right)
 		{
-			if (left.Line == right.Line)
+			if (left.LinePosition == right.LinePosition)
 			{
-				return left.Character < right.Character;
+				return left.CharacterPosition < right.CharacterPosition;
 			}
 
-			return left.Line < right.Line;
+			return left.LinePosition < right.LinePosition;
 		}
 
 		public static bool operator <=(TextPosition left,
 			TextPosition right)
 		{
-			if (left.Line == right.Line)
+			if (left.LinePosition == right.LinePosition)
 			{
-				return left.Character <= right.Character;
+				return left.CharacterPosition <= right.CharacterPosition;
 			}
 
-			return left.Line <= right.Line;
+			return left.LinePosition <= right.LinePosition;
 		}
 
 		#endregion
@@ -147,8 +150,8 @@ namespace MfGames.Commands.TextEditing
 			LinePosition line,
 			CharacterPosition character)
 		{
-			Line = line;
-			Character = character;
+			LinePosition = line;
+			CharacterPosition = character;
 		}
 
 		#endregion
