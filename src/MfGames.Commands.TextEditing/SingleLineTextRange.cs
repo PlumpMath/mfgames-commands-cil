@@ -13,6 +13,26 @@ namespace MfGames.Commands.TextEditing
 	{
 		#region Properties
 
+		public LinePosition FirstLinePosition
+		{
+			get
+			{
+				return BeginTextPosition < EndTextPosition
+					? BeginTextPosition.LinePosition
+					: EndTextPosition.LinePosition;
+			}
+		}
+
+		public LinePosition LastLinePosition
+		{
+			get
+			{
+				return BeginTextPosition > EndTextPosition
+					? BeginTextPosition.LinePosition
+					: EndTextPosition.LinePosition;
+			}
+		}
+
 		/// <summary>
 		/// Contains the beginning character position in the line.
 		/// </summary>

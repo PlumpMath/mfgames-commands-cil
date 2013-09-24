@@ -44,6 +44,16 @@ namespace MfGames.Commands.TextEditing
 		/// </summary>
 		public TextPosition EndTextPosition { get; private set; }
 
+		public LinePosition FirstLinePosition
+		{
+			get
+			{
+				return BeginTextPosition < EndTextPosition
+					? BeginTextPosition.LinePosition
+					: EndTextPosition.LinePosition;
+			}
+		}
+
 		public TextPosition FirstTextPosition
 		{
 			get
@@ -73,6 +83,16 @@ namespace MfGames.Commands.TextEditing
 			{
 				bool results = BeginLinePosition == EndLinePosition;
 				return results;
+			}
+		}
+
+		public LinePosition LastLinePosition
+		{
+			get
+			{
+				return BeginTextPosition > EndTextPosition
+					? BeginTextPosition.LinePosition
+					: EndTextPosition.LinePosition;
 			}
 		}
 
