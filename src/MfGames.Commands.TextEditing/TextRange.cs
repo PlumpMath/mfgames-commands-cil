@@ -39,6 +39,14 @@ namespace MfGames.Commands.TextEditing
 			get { return EndTextPosition.LinePosition; }
 		}
 
+		public static readonly TextRange Empty;
+
+		static TextRange()
+		{
+			var position = new TextPosition(LinePosition.Begin, CharacterPosition.Begin);
+			Empty = new TextRange(position, position);
+		}
+
 		/// <summary>
 		/// Contains the ending text position for the selection.
 		/// </summary>
