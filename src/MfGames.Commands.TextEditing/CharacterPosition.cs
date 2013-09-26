@@ -146,16 +146,19 @@ namespace MfGames.Commands.TextEditing
 				}
 
 				// Depending on the direction, we use the word tokenizer in
-				// the appropriate direction.
+				// the appropriate direction. We also have to resolve the
+				// position because the word tokenizer doesn't know how to handle
+				// the symbolic constants.
+				int searchIndex = searchPosition.GetCharacterIndex(text);
+
 				if (direction == WordSearchDirection.Right)
 				{
-					int index = wordTokenizer.GetNextWordBoundary(text, searchPosition.Index);
+					int index = wordTokenizer.GetNextWordBoundary(text, searchIndex);
 					return index;
 				}
 				else
 				{
-					int index = wordTokenizer.GetPreviousWordBoundary(
-						text, searchPosition.Index);
+					int index = wordTokenizer.GetPreviousWordBoundary(text, searchIndex);
 					return index;
 				}
 			}
