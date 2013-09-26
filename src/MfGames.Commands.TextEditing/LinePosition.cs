@@ -114,13 +114,27 @@ namespace MfGames.Commands.TextEditing
 		public static bool operator >(LinePosition left,
 			LinePosition right)
 		{
-			return left.Index > right.Index;
+			int leftIndex = left.Index == EndIndex
+				? Int32.MaxValue
+				: left.Index;
+			int rightIndex = right.Index == EndIndex
+				? Int32.MaxValue
+				: right.Index;
+
+			return leftIndex > rightIndex;
 		}
 
 		public static bool operator >=(LinePosition left,
 			LinePosition right)
 		{
-			return left.Index >= right.Index;
+			int leftIndex = left.Index == EndIndex
+				? Int32.MaxValue
+				: left.Index;
+			int rightIndex = right.Index == EndIndex
+				? Int32.MaxValue
+				: right.Index;
+
+			return leftIndex >= rightIndex;
 		}
 
 		public static implicit operator LinePosition(int index)
@@ -138,13 +152,27 @@ namespace MfGames.Commands.TextEditing
 		public static bool operator <(LinePosition left,
 			LinePosition right)
 		{
-			return left.Index < right.Index;
+			int leftIndex = left.Index == EndIndex
+				? Int32.MaxValue
+				: left.Index;
+			int rightIndex = right.Index == EndIndex
+				? Int32.MaxValue
+				: right.Index;
+
+			return leftIndex < rightIndex;
 		}
 
 		public static bool operator <=(LinePosition left,
 			LinePosition right)
 		{
-			return left.Index <= right.Index;
+			int leftIndex = left.Index == EndIndex
+				? Int32.MaxValue
+				: left.Index;
+			int rightIndex = right.Index == EndIndex
+				? Int32.MaxValue
+				: right.Index;
+
+			return leftIndex <= rightIndex;
 		}
 
 		#endregion
