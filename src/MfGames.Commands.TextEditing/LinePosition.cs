@@ -70,11 +70,12 @@ namespace MfGames.Commands.TextEditing
 			if (Index >= 0)
 			{
 				// If we are beyond the string, throw an exception.
-				if (Index > count)
+				if (Index >= count)
 				{
 					throw new IndexOutOfRangeException(
 						string.Format("Line position {0} is beyond line count {1}.", Index, count));
 				}
+
 				return Index;
 			}
 
@@ -82,7 +83,7 @@ namespace MfGames.Commands.TextEditing
 			// of the text line.
 			if (Index == End.Index)
 			{
-				return count;
+				return count - 1;
 			}
 
 			// If we got this far, we don't know how to process this.
