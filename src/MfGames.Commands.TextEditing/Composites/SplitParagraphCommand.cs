@@ -39,7 +39,8 @@ namespace MfGames.Commands.TextEditing.Composites
 			// Delete the text from the current line.
 			IDeleteTextCommand<TContext> deleteTextCommand =
 				controller.CreateDeleteTextCommand(
-					new SingleLineTextRange(line, position.CharacterPosition, CharacterPosition.End));
+					new SingleLineTextRange(
+						line, position.CharacterPosition, CharacterPosition.End));
 
 			// Add the commands into the composite and indicate that the whitespace
 			// command controls where the text position will end up.

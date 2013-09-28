@@ -10,7 +10,9 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("MfGames Commands Pattern")]
-[assembly: AssemblyDescription("A library for a common Command Pattern implementation using generics.")]
+[assembly:
+	AssemblyDescription(
+		"A library for a common Command Pattern implementation using generics.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Moonfire Games")]
 [assembly: AssemblyProduct("Moonfire Games' Command Pattern Library")]

@@ -47,7 +47,8 @@ namespace MfGames.Commands.TextEditing
 				return true;
 			}
 
-			return CharacterPosition.Equals(other.CharacterPosition) && LinePosition.Equals(other.LinePosition);
+			return CharacterPosition.Equals(other.CharacterPosition)
+				&& LinePosition.Equals(other.LinePosition);
 		}
 
 		public override bool Equals(object obj)
@@ -56,7 +57,7 @@ namespace MfGames.Commands.TextEditing
 			{
 				return false;
 			}
-			
+
 			if (ReferenceEquals(this, obj))
 			{
 				return true;
@@ -81,7 +82,9 @@ namespace MfGames.Commands.TextEditing
 		public override string ToString()
 		{
 			return string.Format(
-				"TextPosition({0}, {1})", LinePosition.GetIndexString(), CharacterPosition.GetIndexString());
+				"TextPosition({0}, {1})",
+				LinePosition.GetIndexString(),
+				CharacterPosition.GetIndexString());
 		}
 
 		#endregion
@@ -97,8 +100,36 @@ namespace MfGames.Commands.TextEditing
 		public static bool operator >(TextPosition left,
 			TextPosition right)
 		{
+			// If the line position is on the same line, then we use the
+			// character positions.
 			if (left.LinePosition == right.LinePosition)
 			{
+				// Check for the symbolic versions first. In general, End is
+				// always greater than anything else.
+				if (left.CharacterPosition == CharacterPosition.End)
+				{
+					return true;
+				}
+
+				if (right.CharacterPosition == CharacterPosition.End)
+				{
+					return false;
+				}
+
+				// Word is a bit more complicated. If the left is a word, then
+				// it is left than right. If right is a word, then left is always
+				// less than right.
+				if (left.CharacterPosition == CharacterPosition.Word)
+				{
+					return false;
+				}
+
+				if (right.CharacterPosition == CharacterPosition.Word)
+				{
+					return true;
+				}
+
+				// In all other cases, we use the index.
 				return left.CharacterPosition > right.CharacterPosition;
 			}
 
@@ -108,12 +139,7 @@ namespace MfGames.Commands.TextEditing
 		public static bool operator >=(TextPosition left,
 			TextPosition right)
 		{
-			if (left.LinePosition == right.LinePosition)
-			{
-				return left.CharacterPosition >= right.CharacterPosition;
-			}
-
-			return left.LinePosition >= right.LinePosition;
+			return left > right || left == right;
 		}
 
 		public static bool operator !=(TextPosition left,
@@ -125,23 +151,13 @@ namespace MfGames.Commands.TextEditing
 		public static bool operator <(TextPosition left,
 			TextPosition right)
 		{
-			if (left.LinePosition == right.LinePosition)
-			{
-				return left.CharacterPosition < right.CharacterPosition;
-			}
-
-			return left.LinePosition < right.LinePosition;
+			return !(left >= right);
 		}
 
 		public static bool operator <=(TextPosition left,
 			TextPosition right)
 		{
-			if (left.LinePosition == right.LinePosition)
-			{
-				return left.CharacterPosition <= right.CharacterPosition;
-			}
-
-			return left.LinePosition <= right.LinePosition;
+			return !(left > right);
 		}
 
 		#endregion

@@ -39,18 +39,15 @@ namespace MfGames.Commands.TextEditing
 			get { return EndTextPosition.LinePosition; }
 		}
 
-		public static readonly TextRange Empty;
-
-		static TextRange()
-		{
-			var position = new TextPosition(LinePosition.Begin, CharacterPosition.Begin);
-			Empty = new TextRange(position, position);
-		}
-
 		/// <summary>
 		/// Contains the ending text position for the selection.
 		/// </summary>
 		public TextPosition EndTextPosition { get; private set; }
+
+		public CharacterPosition FirstCharacterPosition
+		{
+			get { return FirstTextPosition.CharacterPosition; }
+		}
 
 		public LinePosition FirstLinePosition
 		{
@@ -92,6 +89,11 @@ namespace MfGames.Commands.TextEditing
 				bool results = BeginLinePosition == EndLinePosition;
 				return results;
 			}
+		}
+
+		public CharacterPosition LastCharacterPosition
+		{
+			get { return LastTextPosition.CharacterPosition; }
 		}
 
 		public LinePosition LastLinePosition
@@ -154,6 +156,45 @@ namespace MfGames.Commands.TextEditing
 			return Equals((TextRange) obj);
 		}
 
+		/// <summary>
+		/// Gets the beginning and ending character indices in the range for a
+		/// given text.
+		/// </summary>
+		/// <param name="text">The text the characters represent.</param>
+		/// <param name="firstCharacterIndex">Beginning index in the text.</param>
+		/// <param name="lastCharacterIndex">Ending index in the text.</param>
+		public void GetBeginAndEndCharacterIndices(
+			string text,
+			out int firstCharacterIndex,
+			out int lastCharacterIndex)
+		{
+			firstCharacterIndex = BeginCharacterPosition.GetCharacterIndex(
+				text, EndCharacterPosition, WordSearchDirection.Left);
+			lastCharacterIndex = EndCharacterPosition.GetCharacterIndex(
+				text, BeginCharacterPosition, WordSearchDirection.Right);
+		}
+
+		/// <summary>
+		/// Gets the first and last character indices in the range for a given text.
+		/// </summary>
+		/// <param name="text">The text the characters represent.</param>
+		/// <param name="firstCharacterIndex">First index in the text.</param>
+		/// <param name="lastCharacterIndex">Last index in the text.</param>
+		public void GetFirstAndLastCharacterIndices(
+			string text,
+			out int firstCharacterIndex,
+			out int lastCharacterIndex)
+		{
+			int beginCharacterIndex;
+			int endCharacterIndex;
+
+			GetBeginAndEndCharacterIndices(
+				text, out beginCharacterIndex, out endCharacterIndex);
+
+			firstCharacterIndex = Math.Min(beginCharacterIndex, endCharacterIndex);
+			lastCharacterIndex = Math.Max(beginCharacterIndex, endCharacterIndex);
+		}
+
 		public override int GetHashCode()
 		{
 			unchecked
@@ -202,6 +243,12 @@ namespace MfGames.Commands.TextEditing
 
 		#region Constructors
 
+		static TextRange()
+		{
+			var position = new TextPosition(LinePosition.Begin, CharacterPosition.Begin);
+			Empty = new TextRange(position, position);
+		}
+
 		public TextRange(SingleLineTextRange range)
 			: this(
 				new TextPosition(range.LinePosition, range.BeginCharacterPosition),
@@ -227,6 +274,12 @@ namespace MfGames.Commands.TextEditing
 			BeginTextPosition = begin;
 			EndTextPosition = end;
 		}
+
+		#endregion
+
+		#region Fields
+
+		public static readonly TextRange Empty;
 
 		#endregion
 	}

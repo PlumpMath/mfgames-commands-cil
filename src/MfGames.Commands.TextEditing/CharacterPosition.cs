@@ -38,38 +38,6 @@ namespace MfGames.Commands.TextEditing
 			return obj is CharacterPosition && Equals((CharacterPosition) obj);
 		}
 
-		public override int GetHashCode()
-		{
-			return Index;
-		}
-
-		/// <summary>
-		/// Formats the index into a symbolic string.
-		/// </summary>
-		/// <returns>The numeric value or a symbol for Begin, End, or Word.</returns>
-		public string GetIndexString()
-		{
-			// Figure out the formatting value for the string.
-			string value;
-
-			switch (Index)
-			{
-				case EndIndex:
-					value = "End";
-					break;
-				case WordIndex:
-					value = "Word";
-					break;
-				case BeginIndex:
-					value = "Begin";
-					break;
-				default:
-					value = Index.ToString("N0");
-					break;
-			}
-			return value;
-		}
-
 		/// <summary>
 		/// Translates the magic values (End, Beginning, Word) into actual values
 		/// based on the given count.
@@ -86,7 +54,8 @@ namespace MfGames.Commands.TextEditing
 			CharacterPosition searchPosition,
 			WordSearchDirection direction)
 		{
-			return GetCharacterIndex(text, searchPosition, direction, DefaultWordTokenizer);
+			return GetCharacterIndex(
+				text, searchPosition, direction, DefaultWordTokenizer);
 		}
 
 		/// <summary>
@@ -217,6 +186,38 @@ namespace MfGames.Commands.TextEditing
 			throw new IndexOutOfRangeException("Encountered an invalid index: " + Index);
 		}
 
+		public override int GetHashCode()
+		{
+			return Index;
+		}
+
+		/// <summary>
+		/// Formats the index into a symbolic string.
+		/// </summary>
+		/// <returns>The numeric value or a symbol for Begin, End, or Word.</returns>
+		public string GetIndexString()
+		{
+			// Figure out the formatting value for the string.
+			string value;
+
+			switch (Index)
+			{
+				case EndIndex:
+					value = "End";
+					break;
+				case WordIndex:
+					value = "Word";
+					break;
+				case BeginIndex:
+					value = "Begin";
+					break;
+				default:
+					value = Index.ToString("N0");
+					break;
+			}
+			return value;
+		}
+
 		public override string ToString()
 		{
 			string value = GetIndexString();
@@ -248,7 +249,7 @@ namespace MfGames.Commands.TextEditing
 			int rightIndex = right.Index == EndIndex
 				? Int32.MaxValue
 				: right.Index;
-			
+
 			return leftIndex > rightIndex;
 		}
 

@@ -43,7 +43,8 @@ namespace MfGames.Commands.TextEditings.Tests
 			var position = new CharacterPosition(1000);
 
 			// Act
-			Assert.Throws<IndexOutOfRangeException>(() => position.GetCharacterIndex(input));
+			Assert.Throws<IndexOutOfRangeException>(
+				() => position.GetCharacterIndex(input));
 		}
 
 		[Test]
@@ -188,7 +189,8 @@ namespace MfGames.Commands.TextEditings.Tests
 			CharacterPosition.DefaultWordTokenizer = new OffsetWordTokenizer();
 
 			// Act
-			int results = position.GetCharacterIndex(input, 10, WordSearchDirection.Right);
+			int results = position.GetCharacterIndex(
+				input, 10, WordSearchDirection.Right);
 
 			// Assert
 			Assert.AreEqual(15, results);
@@ -203,7 +205,8 @@ namespace MfGames.Commands.TextEditings.Tests
 			CharacterPosition.DefaultWordTokenizer = new OffsetWordTokenizer();
 
 			// Act
-			int results = position.GetCharacterIndex(input, 14, WordSearchDirection.Right);
+			int results = position.GetCharacterIndex(
+				input, 14, WordSearchDirection.Right);
 
 			// Assert
 			Assert.AreEqual(15, results);
