@@ -63,7 +63,9 @@ namespace MfGames.Commands.TextEditing
 		/// <param name="count">The number of items in the current collection.</param>
 		/// <returns>The normalized index.</returns>
 		/// <exception cref="System.IndexOutOfRangeException">Encountered an invalid index:  + Index</exception>
-		public int GetLineIndex(int count)
+		public int GetLineIndex(
+			int count,
+			LinePositionOptions options = LinePositionOptions.None)
 		{
 			// All the magic values are negative, so if we don't have one, there is
 			// nothing to do.
@@ -72,6 +74,14 @@ namespace MfGames.Commands.TextEditing
 				// If we are beyond the string, throw an exception.
 				if (Index >= count)
 				{
+					// If we aren't doing bound checking, then we just return
+					// the end of the buffer.
+					if (options.HasFlag(LinePositionOptions.NoBoundsChecking))
+					{
+						return count - 1;
+					}
+
+					// We have bounds checking, so throw an exception.
 					throw new IndexOutOfRangeException(
 						string.Format("Line position {0} is beyond line count {1}.", Index, count));
 				}
@@ -86,7 +96,13 @@ namespace MfGames.Commands.TextEditing
 				return count - 1;
 			}
 
-			// If we got this far, we don't know how to process this.
+			// If we got this far, then we have an invalid value.
+			if (options.HasFlag(LinePositionOptions.NoBoundsChecking))
+			{
+				return 0;
+			}
+
+			// We don't know how to process this, so throw an exception.
 			throw new IndexOutOfRangeException("Encountered an invalid index: " + Index);
 		}
 
