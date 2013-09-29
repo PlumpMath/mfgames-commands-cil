@@ -32,28 +32,23 @@ namespace MfGames.Commands.TextEditing.Composites
 			// paragraph into the previous one with a space and then moving the
 			// cursor to the end of the original first paragraph (and space).
 
-			// We start by appending the whitespace to the end of the first line.
+			// Insert the text from the line into the prvious line.
 			var joinedLine = new LinePosition((int) line - 1);
 
-			IInsertTextCommand<TContext> whitespaceCommand =
-				controller.CreateInsertTextCommand(
-					new TextPosition(joinedLine, CharacterPosition.End), " ");
-			whitespaceCommand.UpdateTextPosition = DoTypes.All;
-
-			// Insert the text from the line into the prvious line.
 			IInsertTextFromTextRangeCommand<TContext> insertCommand =
 				controller.CreateInsertTextFromTextRangeCommand(
 					new TextPosition(joinedLine, CharacterPosition.End),
 					new SingleLineTextRange(
 						line, CharacterPosition.Begin, CharacterPosition.End));
+			insertCommand.UpdateTextPosition = DoTypes.All;
 
 			// Finally, delete the current line since we merged it.
 			IDeleteLineCommand<TContext> deleteCommand =
 				controller.CreateDeleteLineCommand(line);
+			deleteCommand.UpdateTextPosition = DoTypes.None;
 
 			// Add the commands into the composite and indicate that the whitespace
 			// command controls where the text position will end up.
-			Commands.Add(whitespaceCommand);
 			Commands.Add(insertCommand);
 			Commands.Add(deleteCommand);
 		}
