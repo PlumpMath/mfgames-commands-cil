@@ -1,10 +1,13 @@
-Adding properties and functionality to make the commands easier to work with.
+Improving the use of the library API by adding additional methods and properties.
 
 # Text Editing Commands
 
-- SingleLineTextRange
-	- Added properties (TextPositionBegin and TextPositionEnd) to convert to those ranges.
-	- Added the concept of "ordered" where the beginning point is less than the end point. Added IsOrdered and GetOrdered() to work with ordered properties.
+- Bumped version to MfGames.Commands 0.2.0
+- Added the concept of "first" and "last" for text ranges to ensure ordered usage. +New
+- Added more logic to the generic text commands to bring it more in line with Microsoft Word. +Changed
+- Removed the white space while joining next and previous paragraphs. +Changed
+- Renamed properties to give them consistent names across positions and lines. +Changed
+- Renamed NormalizeIndex into GetLineIndex and GetCharacterIndex to allow them to be merged at the position and line ranges. +Changed
 
 # Dependencies
 
