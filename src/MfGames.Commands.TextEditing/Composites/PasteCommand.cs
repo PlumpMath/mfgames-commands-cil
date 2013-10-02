@@ -52,7 +52,7 @@ namespace MfGames.Commands.TextEditing.Composites
 				i++)
 			{
 				IInsertLineCommand<TContext> lineCommand =
-					controller.CreateInsertLineCommand((int) position.Line + 1);
+					controller.CreateInsertLineCommand((int) position.LinePosition + 1);
 
 				Commands.Add(lineCommand);
 			}
@@ -64,7 +64,7 @@ namespace MfGames.Commands.TextEditing.Composites
 			{
 				IInsertTextCommand<TContext> textCommand =
 					controller.CreateInsertTextCommand(
-						new TextPosition((int) position.Line + i, CharacterPosition.Begin),
+						new TextPosition((int) position.LinePosition + i, CharacterPosition.Begin),
 						lines[i]);
 				textCommand.UpdateTextPosition = DoTypes.DoAndRedo;
 

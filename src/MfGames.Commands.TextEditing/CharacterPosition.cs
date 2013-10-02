@@ -38,38 +38,6 @@ namespace MfGames.Commands.TextEditing
 			return obj is CharacterPosition && Equals((CharacterPosition) obj);
 		}
 
-		public override int GetHashCode()
-		{
-			return Index;
-		}
-
-		/// <summary>
-		/// Formats the index into a symbolic string.
-		/// </summary>
-		/// <returns>The numeric value or a symbol for Begin, End, or Word.</returns>
-		public string GetIndexString()
-		{
-			// Figure out the formatting value for the string.
-			string value;
-
-			switch (Index)
-			{
-				case EndIndex:
-					value = "End";
-					break;
-				case WordIndex:
-					value = "Word";
-					break;
-				case BeginIndex:
-					value = "Begin";
-					break;
-				default:
-					value = Index.ToString("N0");
-					break;
-			}
-			return value;
-		}
-
 		/// <summary>
 		/// Translates the magic values (End, Beginning, Word) into actual values
 		/// based on the given count.
@@ -81,12 +49,13 @@ namespace MfGames.Commands.TextEditing
 		/// The normalized index.
 		/// </returns>
 		/// <exception cref="System.IndexOutOfRangeException">Encountered an invalid index:  + Index</exception>
-		public int NormalizeIndex(
+		public int GetCharacterIndex(
 			string text,
 			CharacterPosition searchPosition,
 			WordSearchDirection direction)
 		{
-			return NormalizeIndex(text, searchPosition, direction, DefaultWordTokenizer);
+			return GetCharacterIndex(
+				text, searchPosition, direction, DefaultWordTokenizer);
 		}
 
 		/// <summary>
@@ -101,7 +70,7 @@ namespace MfGames.Commands.TextEditing
 		/// The normalized index.
 		/// </returns>
 		/// <exception cref="System.IndexOutOfRangeException">Encountered an invalid index:  + Index</exception>
-		public int NormalizeIndex(
+		public int GetCharacterIndex(
 			string text,
 			CharacterPosition searchPosition,
 			WordSearchDirection direction,
@@ -146,16 +115,19 @@ namespace MfGames.Commands.TextEditing
 				}
 
 				// Depending on the direction, we use the word tokenizer in
-				// the appropriate direction.
+				// the appropriate direction. We also have to resolve the
+				// position because the word tokenizer doesn't know how to handle
+				// the symbolic constants.
+				int searchIndex = searchPosition.GetCharacterIndex(text);
+
 				if (direction == WordSearchDirection.Right)
 				{
-					int index = wordTokenizer.GetNextWordBoundary(text, searchPosition.Index);
+					int index = wordTokenizer.GetNextWordBoundary(text, searchIndex);
 					return index;
 				}
 				else
 				{
-					int index = wordTokenizer.GetPreviousWordBoundary(
-						text, searchPosition.Index);
+					int index = wordTokenizer.GetPreviousWordBoundary(text, searchIndex);
 					return index;
 				}
 			}
@@ -173,7 +145,7 @@ namespace MfGames.Commands.TextEditing
 		/// The normalized index.
 		/// </returns>
 		/// <exception cref="System.IndexOutOfRangeException">Encountered an invalid index:  + Index</exception>
-		public int NormalizeIndex(string text)
+		public int GetCharacterIndex(string text)
 		{
 			// Establish our code contracts.
 			if (text == null)
@@ -214,6 +186,38 @@ namespace MfGames.Commands.TextEditing
 			throw new IndexOutOfRangeException("Encountered an invalid index: " + Index);
 		}
 
+		public override int GetHashCode()
+		{
+			return Index;
+		}
+
+		/// <summary>
+		/// Formats the index into a symbolic string.
+		/// </summary>
+		/// <returns>The numeric value or a symbol for Begin, End, or Word.</returns>
+		public string GetIndexString()
+		{
+			// Figure out the formatting value for the string.
+			string value;
+
+			switch (Index)
+			{
+				case EndIndex:
+					value = "End";
+					break;
+				case WordIndex:
+					value = "Word";
+					break;
+				case BeginIndex:
+					value = "Begin";
+					break;
+				default:
+					value = Index.ToString("N0");
+					break;
+			}
+			return value;
+		}
+
 		public override string ToString()
 		{
 			string value = GetIndexString();
@@ -239,13 +243,27 @@ namespace MfGames.Commands.TextEditing
 		public static bool operator >(CharacterPosition left,
 			CharacterPosition right)
 		{
-			return left.Index > right.Index;
+			int leftIndex = left.Index == EndIndex
+				? Int32.MaxValue
+				: left.Index;
+			int rightIndex = right.Index == EndIndex
+				? Int32.MaxValue
+				: right.Index;
+
+			return leftIndex > rightIndex;
 		}
 
 		public static bool operator >=(CharacterPosition left,
 			CharacterPosition right)
 		{
-			return left.Index >= right.Index;
+			int leftIndex = left.Index == EndIndex
+				? Int32.MaxValue
+				: left.Index;
+			int rightIndex = right.Index == EndIndex
+				? Int32.MaxValue
+				: right.Index;
+
+			return leftIndex >= rightIndex;
 		}
 
 		public static implicit operator CharacterPosition(int index)
@@ -263,13 +281,27 @@ namespace MfGames.Commands.TextEditing
 		public static bool operator <(CharacterPosition left,
 			CharacterPosition right)
 		{
-			return left.Index < right.Index;
+			int leftIndex = left.Index == EndIndex
+				? Int32.MaxValue
+				: left.Index;
+			int rightIndex = right.Index == EndIndex
+				? Int32.MaxValue
+				: right.Index;
+
+			return leftIndex < rightIndex;
 		}
 
 		public static bool operator <=(CharacterPosition left,
 			CharacterPosition right)
 		{
-			return left.Index <= right.Index;
+			int leftIndex = left.Index == EndIndex
+				? Int32.MaxValue
+				: left.Index;
+			int rightIndex = right.Index == EndIndex
+				? Int32.MaxValue
+				: right.Index;
+
+			return leftIndex <= rightIndex;
 		}
 
 		#endregion

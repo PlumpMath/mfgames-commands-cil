@@ -22,7 +22,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			var position = new CharacterPosition(0);
 
 			// Act
-			int results = position.NormalizeIndex(input);
+			int results = position.GetCharacterIndex(input);
 
 			// Assert
 			Assert.AreEqual(0, results);
@@ -43,7 +43,8 @@ namespace MfGames.Commands.TextEditings.Tests
 			var position = new CharacterPosition(1000);
 
 			// Act
-			Assert.Throws<IndexOutOfRangeException>(() => position.NormalizeIndex(input));
+			Assert.Throws<IndexOutOfRangeException>(
+				() => position.GetCharacterIndex(input));
 		}
 
 		[Test]
@@ -78,7 +79,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			CharacterPosition position = CharacterPosition.End;
 
 			// Act
-			int results = position.NormalizeIndex(input);
+			int results = position.GetCharacterIndex(input);
 
 			// Assert
 			Assert.AreEqual(input.Length, results);
@@ -94,7 +95,7 @@ namespace MfGames.Commands.TextEditings.Tests
 
 			// Act
 			Assert.Throws<IndexOutOfRangeException>(
-				() => position.NormalizeIndex(input, 0, WordSearchDirection.Left));
+				() => position.GetCharacterIndex(input, 0, WordSearchDirection.Left));
 		}
 
 		[Test]
@@ -106,7 +107,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			CharacterPosition.DefaultWordTokenizer = new OffsetWordTokenizer();
 
 			// Act
-			int results = position.NormalizeIndex(input, 10, WordSearchDirection.Left);
+			int results = position.GetCharacterIndex(input, 10, WordSearchDirection.Left);
 
 			// Assert
 			Assert.AreEqual(5, results);
@@ -121,7 +122,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			CharacterPosition.DefaultWordTokenizer = new OffsetWordTokenizer();
 
 			// Act
-			int results = position.NormalizeIndex(input, 3, WordSearchDirection.Left);
+			int results = position.GetCharacterIndex(input, 3, WordSearchDirection.Left);
 
 			// Assert
 			Assert.AreEqual(0, results);
@@ -135,7 +136,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			var position = new CharacterPosition(10);
 
 			// Act
-			int results = position.NormalizeIndex(input);
+			int results = position.GetCharacterIndex(input);
 
 			// Assert
 			Assert.AreEqual(10, results);
@@ -149,7 +150,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			var position = new CharacterPosition(input.Length);
 
 			// Act
-			Assert.Throws<ArgumentNullException>(() => position.NormalizeIndex(null));
+			Assert.Throws<ArgumentNullException>(() => position.GetCharacterIndex(null));
 		}
 
 		[Test]
@@ -160,7 +161,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			var position = new CharacterPosition(input.Length);
 
 			// Act
-			int results = position.NormalizeIndex(input);
+			int results = position.GetCharacterIndex(input);
 
 			// Assert
 			Assert.AreEqual(input.Length, results);
@@ -176,7 +177,7 @@ namespace MfGames.Commands.TextEditings.Tests
 
 			// Act
 			Assert.Throws<IndexOutOfRangeException>(
-				() => position.NormalizeIndex(input, 15, WordSearchDirection.Left));
+				() => position.GetCharacterIndex(input, 15, WordSearchDirection.Left));
 		}
 
 		[Test]
@@ -188,7 +189,8 @@ namespace MfGames.Commands.TextEditings.Tests
 			CharacterPosition.DefaultWordTokenizer = new OffsetWordTokenizer();
 
 			// Act
-			int results = position.NormalizeIndex(input, 10, WordSearchDirection.Right);
+			int results = position.GetCharacterIndex(
+				input, 10, WordSearchDirection.Right);
 
 			// Assert
 			Assert.AreEqual(15, results);
@@ -203,7 +205,8 @@ namespace MfGames.Commands.TextEditings.Tests
 			CharacterPosition.DefaultWordTokenizer = new OffsetWordTokenizer();
 
 			// Act
-			int results = position.NormalizeIndex(input, 14, WordSearchDirection.Right);
+			int results = position.GetCharacterIndex(
+				input, 14, WordSearchDirection.Right);
 
 			// Assert
 			Assert.AreEqual(15, results);
@@ -254,7 +257,7 @@ namespace MfGames.Commands.TextEditings.Tests
 
 			// Act
 			Assert.Throws<InvalidOperationException>(
-				() => position.NormalizeIndex(input));
+				() => position.GetCharacterIndex(input));
 		}
 
 		[Test]

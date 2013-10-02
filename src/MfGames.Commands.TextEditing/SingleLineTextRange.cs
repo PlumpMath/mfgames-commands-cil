@@ -16,17 +16,103 @@ namespace MfGames.Commands.TextEditing
 		/// <summary>
 		/// Contains the beginning character position in the line.
 		/// </summary>
-		public CharacterPosition CharacterBegin { get; private set; }
+		public CharacterPosition BeginCharacterPosition { get; private set; }
+
+		/// <summary>
+		/// Gets a TextPosition representing the line and start character.
+		/// </summary>
+		public TextPosition BeginTextPosition
+		{
+			get
+			{
+				var results = new TextPosition(LinePosition, BeginCharacterPosition);
+				return results;
+			}
+		}
 
 		/// <summary>
 		/// Contains the ending character position in the line.
 		/// </summary>
-		public CharacterPosition CharacterEnd { get; private set; }
+		public CharacterPosition EndCharacterPosition { get; private set; }
+
+		/// <summary>
+		/// Gets a TextPosition representing the line and end character.
+		/// </summary>
+		public TextPosition EndTextPosition
+		{
+			get
+			{
+				var results = new TextPosition(LinePosition, EndCharacterPosition);
+				return results;
+			}
+		}
+
+		public CharacterPosition FirstCharacterPosition
+		{
+			get
+			{
+				return BeginCharacterPosition < EndCharacterPosition
+					? BeginCharacterPosition
+					: EndCharacterPosition;
+			}
+		}
+
+		public LinePosition FirstLinePosition
+		{
+			get
+			{
+				return BeginTextPosition < EndTextPosition
+					? BeginTextPosition.LinePosition
+					: EndTextPosition.LinePosition;
+			}
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether this text range represents an empty
+		/// selection.
+		/// </summary>
+		public bool IsEmpty
+		{
+			get { return BeginTextPosition == EndTextPosition; }
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether the begin point is before the
+		/// end character.
+		/// </summary>
+		public bool IsOrdered
+		{
+			get
+			{
+				bool results = BeginCharacterPosition < EndCharacterPosition;
+				return results;
+			}
+		}
+
+		public CharacterPosition LastCharacterPosition
+		{
+			get
+			{
+				return BeginCharacterPosition < EndCharacterPosition
+					? EndCharacterPosition
+					: BeginCharacterPosition;
+			}
+		}
+
+		public LinePosition LastLinePosition
+		{
+			get
+			{
+				return BeginTextPosition > EndTextPosition
+					? BeginTextPosition.LinePosition
+					: EndTextPosition.LinePosition;
+			}
+		}
 
 		/// <summary>
 		/// Contains the line to modify.
 		/// </summary>
-		public LinePosition Line { get; private set; }
+		public LinePosition LinePosition { get; private set; }
 
 		#endregion
 
@@ -38,12 +124,15 @@ namespace MfGames.Commands.TextEditing
 			{
 				return false;
 			}
+
 			if (ReferenceEquals(this, other))
 			{
 				return true;
 			}
-			return CharacterBegin.Equals(other.CharacterBegin)
-				&& CharacterEnd.Equals(other.CharacterEnd) && Line.Equals(other.Line);
+
+			return BeginCharacterPosition.Equals(other.BeginCharacterPosition)
+				&& EndCharacterPosition.Equals(other.EndCharacterPosition)
+				&& LinePosition.Equals(other.LinePosition);
 		}
 
 		public override bool Equals(object obj)
@@ -52,10 +141,12 @@ namespace MfGames.Commands.TextEditing
 			{
 				return false;
 			}
+
 			if (ReferenceEquals(this, obj))
 			{
 				return true;
 			}
+
 			if (obj.GetType() != GetType())
 			{
 				return false;
@@ -63,24 +154,80 @@ namespace MfGames.Commands.TextEditing
 			return Equals((SingleLineTextRange) obj);
 		}
 
+		/// <summary>
+		/// Gets the beginning and ending character indices in the range for a
+		/// given text.
+		/// </summary>
+		/// <param name="text">The text the characters represent.</param>
+		/// <param name="firstCharacterIndex">Beginning index in the text.</param>
+		/// <param name="lastCharacterIndex">Ending index in the text.</param>
+		public void GetBeginAndEndCharacterIndices(
+			string text,
+			out int firstCharacterIndex,
+			out int lastCharacterIndex)
+		{
+			firstCharacterIndex = BeginCharacterPosition.GetCharacterIndex(
+				text, EndCharacterPosition, WordSearchDirection.Left);
+			lastCharacterIndex = EndCharacterPosition.GetCharacterIndex(
+				text, BeginCharacterPosition, WordSearchDirection.Right);
+		}
+
+		/// <summary>
+		/// Gets the first and last character indices in the range for a given text.
+		/// </summary>
+		/// <param name="text">The text the characters represent.</param>
+		/// <param name="firstCharacterIndex">First index in the text.</param>
+		/// <param name="lastCharacterIndex">Last index in the text.</param>
+		public void GetFirstAndLastCharacterIndices(
+			string text,
+			out int firstCharacterIndex,
+			out int lastCharacterIndex)
+		{
+			int beginCharacterIndex;
+			int endCharacterIndex;
+
+			GetBeginAndEndCharacterIndices(
+				text, out beginCharacterIndex, out endCharacterIndex);
+
+			firstCharacterIndex = Math.Min(beginCharacterIndex, endCharacterIndex);
+			lastCharacterIndex = Math.Max(beginCharacterIndex, endCharacterIndex);
+		}
+
 		public override int GetHashCode()
 		{
 			unchecked
 			{
-				int hashCode = CharacterBegin.GetHashCode();
-				hashCode = (hashCode * 397) ^ CharacterEnd.GetHashCode();
-				hashCode = (hashCode * 397) ^ Line.GetHashCode();
+				int hashCode = BeginCharacterPosition.GetHashCode();
+				hashCode = (hashCode * 397) ^ EndCharacterPosition.GetHashCode();
+				hashCode = (hashCode * 397) ^ LinePosition.GetHashCode();
 				return hashCode;
 			}
+		}
+
+		/// <summary>
+		/// Gets a text range that is ordered so the begin character is less
+		/// than the end range.
+		/// </summary>
+		/// <returns></returns>
+		public SingleLineTextRange GetOrderedRange()
+		{
+			if (IsOrdered)
+			{
+				return this;
+			}
+
+			var results = new SingleLineTextRange(
+				LinePosition, EndCharacterPosition, BeginCharacterPosition);
+			return results;
 		}
 
 		public override string ToString()
 		{
 			return string.Format(
 				"SingleLineTextRange ({0}, {1} to {2})",
-				Line.GetIndexString(),
-				CharacterBegin.GetIndexString(),
-				CharacterEnd.GetIndexString());
+				LinePosition.GetIndexString(),
+				BeginCharacterPosition.GetIndexString(),
+				EndCharacterPosition.GetIndexString());
 		}
 
 		#endregion
@@ -108,9 +255,9 @@ namespace MfGames.Commands.TextEditing
 			CharacterPosition characterBegin,
 			CharacterPosition characterEnd)
 		{
-			Line = line;
-			CharacterBegin = characterBegin;
-			CharacterEnd = characterEnd;
+			LinePosition = line;
+			BeginCharacterPosition = characterBegin;
+			EndCharacterPosition = characterEnd;
 		}
 
 		#endregion

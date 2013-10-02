@@ -16,6 +16,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{18908B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MfGames.Commands.TextEditing", "MfGames.Commands.TextEditing\MfGames.Commands.TextEditing.csproj", "{86819A8B-57D0-42FC-9232-382BE6877FB5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FE07ADF8-2AFE-4B0E-B588-110F4944BF7D}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.markdown = ..\README.markdown
+		..\RELEASE.markdown = ..\RELEASE.markdown
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

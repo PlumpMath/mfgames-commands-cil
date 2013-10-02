@@ -20,7 +20,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			var position = new LinePosition(0);
 
 			// Act
-			int results = position.NormalizeIndex(15);
+			int results = position.GetLineIndex(15);
 
 			// Assert
 			Assert.AreEqual(0, results);
@@ -40,7 +40,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			var position = new LinePosition(1000);
 
 			// Act
-			Assert.Throws<IndexOutOfRangeException>(() => position.NormalizeIndex(10));
+			Assert.Throws<IndexOutOfRangeException>(() => position.GetLineIndex(10));
 		}
 
 		[Test]
@@ -75,7 +75,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			LinePosition position = LinePosition.End;
 
 			// Act
-			int results = position.NormalizeIndex(15);
+			int results = position.GetLineIndex(15);
 
 			// Assert
 			Assert.AreEqual(input.Length, results);
@@ -88,7 +88,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			var position = new LinePosition(10);
 
 			// Act
-			int results = position.NormalizeIndex(15);
+			int results = position.GetLineIndex(15);
 
 			// Assert
 			Assert.AreEqual(10, results);
@@ -102,7 +102,7 @@ namespace MfGames.Commands.TextEditings.Tests
 			var position = new LinePosition(input.Length);
 
 			// Act
-			int results = position.NormalizeIndex(15);
+			int results = position.GetLineIndex(15);
 
 			// Assert
 			Assert.AreEqual(input.Length, results);

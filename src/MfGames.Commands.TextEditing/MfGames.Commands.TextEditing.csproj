@@ -58,6 +58,7 @@
     <Compile Include="ITextEditingCommand.cs" />
     <Compile Include="ITextEditingCommandController.cs" />
     <Compile Include="LinePosition.cs" />
+    <Compile Include="LinePositionOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingleLineTextRange.cs" />
     <Compile Include="TextPosition.cs" />

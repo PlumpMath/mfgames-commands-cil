@@ -63,18 +63,29 @@ namespace MfGames.Commands.TextEditing
 		/// <param name="count">The number of items in the current collection.</param>
 		/// <returns>The normalized index.</returns>
 		/// <exception cref="System.IndexOutOfRangeException">Encountered an invalid index:  + Index</exception>
-		public int NormalizeIndex(int count)
+		public int GetLineIndex(
+			int count,
+			LinePositionOptions options = LinePositionOptions.None)
 		{
 			// All the magic values are negative, so if we don't have one, there is
 			// nothing to do.
 			if (Index >= 0)
 			{
 				// If we are beyond the string, throw an exception.
-				if (Index > count)
+				if (Index >= count)
 				{
+					// If we aren't doing bound checking, then we just return
+					// the end of the buffer.
+					if (options.HasFlag(LinePositionOptions.NoBoundsChecking))
+					{
+						return count - 1;
+					}
+
+					// We have bounds checking, so throw an exception.
 					throw new IndexOutOfRangeException(
 						string.Format("Line position {0} is beyond line count {1}.", Index, count));
 				}
+
 				return Index;
 			}
 
@@ -82,10 +93,16 @@ namespace MfGames.Commands.TextEditing
 			// of the text line.
 			if (Index == End.Index)
 			{
-				return count;
+				return count - 1;
 			}
 
-			// If we got this far, we don't know how to process this.
+			// If we got this far, then we have an invalid value.
+			if (options.HasFlag(LinePositionOptions.NoBoundsChecking))
+			{
+				return 0;
+			}
+
+			// We don't know how to process this, so throw an exception.
 			throw new IndexOutOfRangeException("Encountered an invalid index: " + Index);
 		}
 
@@ -114,13 +131,27 @@ namespace MfGames.Commands.TextEditing
 		public static bool operator >(LinePosition left,
 			LinePosition right)
 		{
-			return left.Index > right.Index;
+			int leftIndex = left.Index == EndIndex
+				? Int32.MaxValue
+				: left.Index;
+			int rightIndex = right.Index == EndIndex
+				? Int32.MaxValue
+				: right.Index;
+
+			return leftIndex > rightIndex;
 		}
 
 		public static bool operator >=(LinePosition left,
 			LinePosition right)
 		{
-			return left.Index >= right.Index;
+			int leftIndex = left.Index == EndIndex
+				? Int32.MaxValue
+				: left.Index;
+			int rightIndex = right.Index == EndIndex
+				? Int32.MaxValue
+				: right.Index;
+
+			return leftIndex >= rightIndex;
 		}
 
 		public static implicit operator LinePosition(int index)
@@ -138,13 +169,27 @@ namespace MfGames.Commands.TextEditing
 		public static bool operator <(LinePosition left,
 			LinePosition right)
 		{
-			return left.Index < right.Index;
+			int leftIndex = left.Index == EndIndex
+				? Int32.MaxValue
+				: left.Index;
+			int rightIndex = right.Index == EndIndex
+				? Int32.MaxValue
+				: right.Index;
+
+			return leftIndex < rightIndex;
 		}
 
 		public static bool operator <=(LinePosition left,
 			LinePosition right)
 		{
-			return left.Index <= right.Index;
+			int leftIndex = left.Index == EndIndex
+				? Int32.MaxValue
+				: left.Index;
+			int rightIndex = right.Index == EndIndex
+				? Int32.MaxValue
+				: right.Index;
+
+			return leftIndex <= rightIndex;
 		}
 
 		#endregion
